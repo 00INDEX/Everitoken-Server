@@ -9,11 +9,19 @@
     <property name="hibernate.connection.url">jdbc:mariadb://49.234.155.178:3306/everitoken</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="show_sql">true</property>
-    <property name="hibernate.connection.username">admin</property>
-    <property name="hibernate.connection.password">admin</property>
     <property name="format_sql">true</property>
     <property name="use_sql_comments">false</property>
-    <mapping class="everitoken.entity.CustomerEntity"/>
+    <property name="hibernate.connection.username">admin</property>
+    <property name="hibernate.connection.password">admin</property>
     <mapping resource="CustomerEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.CustomerEntity"/>
+    <mapping resource="UserEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.UserEntity"/>
+    <mapping resource="GovernmentEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.GovernmentEntity"/>
+    <mapping resource="ProducerEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.ProducerEntity"/>
+    <mapping resource="RecylingStationEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.RecylingStationEntity"/>
   </session-factory>
 </hibernate-configuration>

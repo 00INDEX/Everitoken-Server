@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -33,25 +34,42 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     @Override
-    public void add(CustomerEntity entity) /**throws Exception*/{
+    public int add(CustomerEntity entity) throws Exception{
         cfg = new Configuration();
         cfg.configure();
         SessionFactory sessionFactory = cfg.buildSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-
+        int uid = -1;
         try {
             session.save(entity);
+            uid = entity.getCustomerUid();
         }catch (Exception e){
             e.printStackTrace();
-            Exception exception = new Exception("数据库异常");
-            //throw exception;
-        }finally {
-            transaction.commit();
-            session.close();
-            sessionFactory.close();
+            transaction.rollback();
+            throw e;
         }
+        transaction.commit();
+        session.close();
+        sessionFactory.close();
+        return uid;
+    }
 
+    /**
+     * 根据邮箱查询数据
+     * @param email 用户邮箱
+     * @return
+     */
+    public CustomerEntity getByEmail(String email) {
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from CustomerEntity customer where customer.customerEmail = :email");
+        query.setParameter("email", email);
+        CustomerEntity customerEntity = (CustomerEntity)query.getSingleResult();
+        return customerEntity;
     }
 
     @Override

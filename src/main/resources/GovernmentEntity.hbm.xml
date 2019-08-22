@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="everitoken.entity.GovernmentEntity" table="government" schema="everitoken">
+        <id name="governmentUid" column="government_uid"><generator class="identity"/></id>
+        <property name="governmentUsername" column="government_username"/>
+        <property name="governmentPassword" column="government_password"/>
+        <property name="governmentName" column="government_name"/>
+        <property name="governmentPrivateKey" column="government_private_key"/>
+        <property name="governmentChnCode" column="government_CHNCode"/>
+    </class>
+</hibernate-mapping>

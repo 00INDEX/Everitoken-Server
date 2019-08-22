@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="everitoken.entity.RecylingStationEntity" table="recyling_station" schema="everitoken">
+        <id name="rsUid" column="rs_uid">
+            <generator class="identity"/>
+        </id>
+        <property name="rsName" column="rs_name"/>
+        <property name="rsPrivateKey" column="rs_private_key"/>
+    </class>
+</hibernate-mapping>
