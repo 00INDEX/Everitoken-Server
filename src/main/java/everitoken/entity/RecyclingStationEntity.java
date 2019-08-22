@@ -1,46 +1,13 @@
 package everitoken.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
-@Table(name = "recyling_station", schema = "everitoken", catalog = "")
+@Table(name = "recycling_station", schema = "everitoken", catalog = "")
 public class RecyclingStationEntity {
-    private int rsUid;
-    private String rsUsername;
-    private String rsPassword;
     private String rsName;
     private String rsPrivateKey;
-
-    @Id
-    @Column(name = "rs_uid")
-    public int getRsUid() {
-        return rsUid;
-    }
-
-    public void setRsUid(int rsUid) {
-        this.rsUid = rsUid;
-    }
-
-    @Basic
-    @Column(name = "rs_username")
-    public String getRsUsername() {
-        return rsUsername;
-    }
-
-    public void setRsUsername(String rsUsername) {
-        this.rsUsername = rsUsername;
-    }
-
-    @Basic
-    @Column(name = "rs_password")
-    public String getRsPassword() {
-        return rsPassword;
-    }
-
-    public void setRsPassword(String rsPassword) {
-        this.rsPassword = rsPassword;
-    }
+    private int rsUid;
 
     @Basic
     @Column(name = "rs_name")
@@ -62,20 +29,36 @@ public class RecyclingStationEntity {
         this.rsPrivateKey = rsPrivateKey;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "rs_uid")
+    public int getRsUid() {
+        return rsUid;
+    }
+
+    public void setRsUid(int rsUid) {
+        this.rsUid = rsUid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RecyclingStationEntity)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         RecyclingStationEntity that = (RecyclingStationEntity) o;
-        return getRsUid() == that.getRsUid() &&
-                getRsUsername().equals(that.getRsUsername()) &&
-                getRsPassword().equals(that.getRsPassword()) &&
-                getRsName().equals(that.getRsName()) &&
-                getRsPrivateKey().equals(that.getRsPrivateKey());
+
+        if (rsUid != that.rsUid) return false;
+        if (rsName != null ? !rsName.equals(that.rsName) : that.rsName != null) return false;
+        if (rsPrivateKey != null ? !rsPrivateKey.equals(that.rsPrivateKey) : that.rsPrivateKey != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRsUid(), getRsUsername(), getRsPassword(), getRsName(), getRsPrivateKey());
+        int result = rsName != null ? rsName.hashCode() : 0;
+        result = 31 * result + (rsPrivateKey != null ? rsPrivateKey.hashCode() : 0);
+        result = 31 * result + rsUid;
+        return result;
     }
 }

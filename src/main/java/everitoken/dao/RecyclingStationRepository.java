@@ -1,6 +1,6 @@
 package everitoken.dao;
 
-import everitoken.entity.RecylingStationEntity;
+import everitoken.entity.RecyclingStationEntity;
 
-public interface RecyclingStationRepository extends DomainRepository<RecylingStationEntity, Integer> {
+public interface RecyclingStationRepository extends DomainRepository<RecyclingStationEntity, Integer> {
 }

@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="everitoken.entity.RecylingStationEntity" table="recyling_station" schema="everitoken">
+    <class name="everitoken.entity.RecyclingStationEntity" table="recycling_station" schema="everitoken">
         <id name="rsUid" column="rs_uid">
             <generator class="identity"/>
         </id>

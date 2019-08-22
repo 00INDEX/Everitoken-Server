@@ -22,6 +22,6 @@
     <mapping resource="ProducerEntity.hbm.xml"/>
     <mapping class="everitoken.entity.ProducerEntity"/>
     <mapping resource="RecylingStationEntity.hbm.xml"/>
-    <mapping class="everitoken.entity.RecylingStationEntity"/>
+    <mapping class="everitoken.entity.RecyclingStationEntity"/>
   </session-factory>
 </hibernate-configuration>
