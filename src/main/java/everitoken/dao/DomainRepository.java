@@ -13,7 +13,7 @@ public interface DomainRepository<T, PK extends Serializable> {
 
     void persist(T entity);
 
-    void add(T entity) throws Exception;
+    int add(T entity) throws Exception;
 
     void update(T entity);
 

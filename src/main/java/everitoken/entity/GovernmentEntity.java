@@ -1,7 +1,6 @@
 package everitoken.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "government", schema = "everitoken", catalog = "")
@@ -14,6 +13,7 @@ public class GovernmentEntity {
     private String governmentChnCode;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "government_uid")
     public int getGovernmentUid() {
         return governmentUid;
@@ -76,18 +76,33 @@ public class GovernmentEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GovernmentEntity)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         GovernmentEntity that = (GovernmentEntity) o;
-        return getGovernmentUid() == that.getGovernmentUid() &&
-                getGovernmentUsername().equals(that.getGovernmentUsername()) &&
-                getGovernmentPassword().equals(that.getGovernmentPassword()) &&
-                getGovernmentName().equals(that.getGovernmentName()) &&
-                getGovernmentPrivateKey().equals(that.getGovernmentPrivateKey()) &&
-                getGovernmentChnCode().equals(that.getGovernmentChnCode());
+
+        if (governmentUid != that.governmentUid) return false;
+        if (governmentUsername != null ? !governmentUsername.equals(that.governmentUsername) : that.governmentUsername != null)
+            return false;
+        if (governmentPassword != null ? !governmentPassword.equals(that.governmentPassword) : that.governmentPassword != null)
+            return false;
+        if (governmentName != null ? !governmentName.equals(that.governmentName) : that.governmentName != null)
+            return false;
+        if (governmentPrivateKey != null ? !governmentPrivateKey.equals(that.governmentPrivateKey) : that.governmentPrivateKey != null)
+            return false;
+        if (governmentChnCode != null ? !governmentChnCode.equals(that.governmentChnCode) : that.governmentChnCode != null)
+            return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getGovernmentUid(), getGovernmentUsername(), getGovernmentPassword(), getGovernmentName(), getGovernmentPrivateKey(), getGovernmentChnCode());
+        int result = governmentUid;
+        result = 31 * result + (governmentUsername != null ? governmentUsername.hashCode() : 0);
+        result = 31 * result + (governmentPassword != null ? governmentPassword.hashCode() : 0);
+        result = 31 * result + (governmentName != null ? governmentName.hashCode() : 0);
+        result = 31 * result + (governmentPrivateKey != null ? governmentPrivateKey.hashCode() : 0);
+        result = 31 * result + (governmentChnCode != null ? governmentChnCode.hashCode() : 0);
+        return result;
     }
 }

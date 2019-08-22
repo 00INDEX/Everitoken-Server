@@ -1,78 +1,26 @@
 package everitoken.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "producer", schema = "everitoken", catalog = "")
 public class ProducerEntity {
     private int producerUid;
-    private String producerUsername;
-    private String producerPassword;
     private String producerEmail;
     private String producerName;
     private String producerPrivateKey;
+    private Byte authorized;
     private String producerChnCode;
-    private int authorized;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "producer_uid")
     public int getProducerUid() {
         return producerUid;
     }
 
-    public void setProducerUid(int ProducerUid) {
-        this.producerUid = ProducerUid;
-    }
-
-    @Basic
-    @Column(name = "producer_username")
-    public String getProducerUsername() {
-        return producerUsername;
-    }
-
-    public void setProducerUsername(String ProducerUsername) {
-        this.producerUsername = ProducerUsername;
-    }
-
-    @Basic
-    @Column(name = "producer_password")
-    public String getProducerPassword() {
-        return producerPassword;
-    }
-
-    public void setProducerPassword(String ProducerPassword) {
-        this.producerPassword = ProducerPassword;
-    }
-
-    @Basic
-    @Column(name = "producer_name")
-    public String getProducerName() {
-        return producerName;
-    }
-
-    public void setProducerName(String ProducerName) {
-        this.producerName = ProducerName;
-    }
-
-    @Basic
-    @Column(name = "producer_private_key")
-    public String getProducerPrivateKey() {
-        return producerPrivateKey;
-    }
-
-    public void setProducerPrivateKey(String ProducerPrivateKey) {
-        this.producerPrivateKey = ProducerPrivateKey;
-    }
-
-    @Basic
-    @Column(name = "producer_CHNCode")
-    public String getProducerChnCode() {
-        return producerChnCode;
-    }
-
-    public void setProducerChnCode(String ProducerChnCode) {
-        this.producerChnCode = ProducerChnCode;
+    public void setProducerUid(int producerUid) {
+        this.producerUid = producerUid;
     }
 
     @Basic
@@ -86,12 +34,73 @@ public class ProducerEntity {
     }
 
     @Basic
+    @Column(name = "producer_name")
+    public String getProducerName() {
+        return producerName;
+    }
+
+    public void setProducerName(String producerName) {
+        this.producerName = producerName;
+    }
+
+    @Basic
+    @Column(name = "producer_private_key")
+    public String getProducerPrivateKey() {
+        return producerPrivateKey;
+    }
+
+    public void setProducerPrivateKey(String producerPrivateKey) {
+        this.producerPrivateKey = producerPrivateKey;
+    }
+
+    @Basic
     @Column(name = "authorized")
-    public int getAuthorized() {
+    public Byte getAuthorized() {
         return authorized;
     }
 
-    public void setAuthorized(int authorized) {
+    public void setAuthorized(Byte authorized) {
         this.authorized = authorized;
+    }
+
+    @Basic
+    @Column(name = "producer_CHNCode")
+    public String getProducerChnCode() {
+        return producerChnCode;
+    }
+
+    public void setProducerChnCode(String producerChnCode) {
+        this.producerChnCode = producerChnCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProducerEntity that = (ProducerEntity) o;
+
+        if (producerUid != that.producerUid) return false;
+        if (producerEmail != null ? !producerEmail.equals(that.producerEmail) : that.producerEmail != null)
+            return false;
+        if (producerName != null ? !producerName.equals(that.producerName) : that.producerName != null) return false;
+        if (producerPrivateKey != null ? !producerPrivateKey.equals(that.producerPrivateKey) : that.producerPrivateKey != null)
+            return false;
+        if (authorized != null ? !authorized.equals(that.authorized) : that.authorized != null) return false;
+        if (producerChnCode != null ? !producerChnCode.equals(that.producerChnCode) : that.producerChnCode != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = producerUid;
+        result = 31 * result + (producerEmail != null ? producerEmail.hashCode() : 0);
+        result = 31 * result + (producerName != null ? producerName.hashCode() : 0);
+        result = 31 * result + (producerPrivateKey != null ? producerPrivateKey.hashCode() : 0);
+        result = 31 * result + (authorized != null ? authorized.hashCode() : 0);
+        result = 31 * result + (producerChnCode != null ? producerChnCode.hashCode() : 0);
+        return result;
     }
 }

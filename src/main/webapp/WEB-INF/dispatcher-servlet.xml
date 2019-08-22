@@ -31,4 +31,12 @@
             </list>
         </property>
     </bean>
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/test" />
+            <mvc:exclude-mapping path="/**" />
+            <bean class="everitoken.Interceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
