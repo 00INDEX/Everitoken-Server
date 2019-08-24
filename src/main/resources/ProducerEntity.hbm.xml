@@ -8,10 +8,9 @@
         <id name="producerUid" column="producer_uid">
             <generator class="identity"/>
         </id>
-        <property name="producerEmail" column="producer_email"/>
         <property name="producerName" column="producer_name"/>
         <property name="producerPrivateKey" column="producer_private_key"/>
-        <property name="authorized" column="authorized"/>
+        <property name="producerAuthorized" column="producer_authorized"/>
         <property name="producerChnCode" column="producer_CHNCode"/>
     </class>
 </hibernate-mapping>

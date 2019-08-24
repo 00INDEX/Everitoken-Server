@@ -25,7 +25,7 @@ public class Interceptor extends HandlerInterceptorAdapter {
         /** 允许匿名访问的ur列表 */
         String[] allowUrls =new String[]{"/toLogin","/login"};
         String url =request.getRequestURL().toString();
-        if ((int)session.getAttribute("customer_uid") <= 0 || session.getAttribute("customer_uid") == null){
+        if ((int)session.getAttribute("uid") <= 0 || session.getAttribute("uid") == null){
             response.sendRedirect(request.getContextPath()+"/customer/notlogin");
         }
         return super.preHandle(request, response, handler);

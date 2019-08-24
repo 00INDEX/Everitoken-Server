@@ -9,7 +9,6 @@
             <generator class="identity"/>
         </id>
         <property name="customerPhone" column="customer_phone"/>
-        <property name="customerEmail" column="customer_email"/>
         <property name="customerSex" column="customer_sex"/>
         <property name="customerName" column="customer_name"/>
         <property name="customerIdnumber" column="customer_idnumber"/>

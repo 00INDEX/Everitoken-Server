@@ -6,8 +6,6 @@ import javax.persistence.*;
 @Table(name = "government", schema = "everitoken", catalog = "")
 public class GovernmentEntity {
     private int governmentUid;
-    private String governmentUsername;
-    private String governmentPassword;
     private String governmentName;
     private String governmentPrivateKey;
     private String governmentChnCode;
@@ -23,25 +21,7 @@ public class GovernmentEntity {
         this.governmentUid = governmentUid;
     }
 
-    @Basic
-    @Column(name = "government_username")
-    public String getGovernmentUsername() {
-        return governmentUsername;
-    }
 
-    public void setGovernmentUsername(String governmentUsername) {
-        this.governmentUsername = governmentUsername;
-    }
-
-    @Basic
-    @Column(name = "government_password")
-    public String getGovernmentPassword() {
-        return governmentPassword;
-    }
-
-    public void setGovernmentPassword(String governmentPassword) {
-        this.governmentPassword = governmentPassword;
-    }
 
     @Basic
     @Column(name = "government_name")
@@ -81,10 +61,6 @@ public class GovernmentEntity {
         GovernmentEntity that = (GovernmentEntity) o;
 
         if (governmentUid != that.governmentUid) return false;
-        if (governmentUsername != null ? !governmentUsername.equals(that.governmentUsername) : that.governmentUsername != null)
-            return false;
-        if (governmentPassword != null ? !governmentPassword.equals(that.governmentPassword) : that.governmentPassword != null)
-            return false;
         if (governmentName != null ? !governmentName.equals(that.governmentName) : that.governmentName != null)
             return false;
         if (governmentPrivateKey != null ? !governmentPrivateKey.equals(that.governmentPrivateKey) : that.governmentPrivateKey != null)
@@ -98,8 +74,6 @@ public class GovernmentEntity {
     @Override
     public int hashCode() {
         int result = governmentUid;
-        result = 31 * result + (governmentUsername != null ? governmentUsername.hashCode() : 0);
-        result = 31 * result + (governmentPassword != null ? governmentPassword.hashCode() : 0);
         result = 31 * result + (governmentName != null ? governmentName.hashCode() : 0);
         result = 31 * result + (governmentPrivateKey != null ? governmentPrivateKey.hashCode() : 0);
         result = 31 * result + (governmentChnCode != null ? governmentChnCode.hashCode() : 0);

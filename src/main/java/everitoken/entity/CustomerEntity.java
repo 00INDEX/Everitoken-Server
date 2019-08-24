@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "customer", schema = "everitoken", catalog = "")
 public class CustomerEntity {
     private Integer customerUid;
-    private String customerEmail;
     private Integer customerSex;
     private String customerName;
     private String customerIdnumber;
@@ -24,15 +23,7 @@ public class CustomerEntity {
         this.customerUid = customerUid;
     }
 
-    @Basic
-    @Column(name = "customer_email")
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
 
     @Basic
     @Column(name = "customer_sex")
@@ -94,8 +85,6 @@ public class CustomerEntity {
         if (customerUid != that.customerUid) return false;
         if (customerPhone != null ? !customerPhone.equals(that.customerPhone) : that.customerPhone != null)
             return false;
-        if (customerEmail != null ? !customerEmail.equals(that.customerEmail) : that.customerEmail != null)
-            return false;
         if (customerSex != null ? !customerSex.equals(that.customerSex) : that.customerSex != null) return false;
         if (customerName != null ? !customerName.equals(that.customerName) : that.customerName != null) return false;
         if (customerIdnumber != null ? !customerIdnumber.equals(that.customerIdnumber) : that.customerIdnumber != null)
@@ -110,7 +99,6 @@ public class CustomerEntity {
     public int hashCode() {
         int result = customerUid;
         result = 31 * result + (customerPhone != null ? customerPhone.hashCode() : 0);
-        result = 31 * result + (customerEmail != null ? customerEmail.hashCode() : 0);
         result = 31 * result + (customerSex != null ? customerSex.hashCode() : 0);
         result = 31 * result + (customerName != null ? customerName.hashCode() : 0);
         result = 31 * result + (customerIdnumber != null ? customerIdnumber.hashCode() : 0);

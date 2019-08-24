@@ -6,8 +6,6 @@
 
     <class name="everitoken.entity.GovernmentEntity" table="government" schema="everitoken">
         <id name="governmentUid" column="government_uid"><generator class="identity"/></id>
-        <property name="governmentUsername" column="government_username"/>
-        <property name="governmentPassword" column="government_password"/>
         <property name="governmentName" column="government_name"/>
         <property name="governmentPrivateKey" column="government_private_key"/>
         <property name="governmentChnCode" column="government_CHNCode"/>

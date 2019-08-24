@@ -90,6 +90,22 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return customerEntity;
     }
 
+    /**
+     * 根据id查询数据
+     * @param uid 用户id
+     * @return
+     */
+    public CustomerEntity getById(int uid){
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        CustomerEntity customerEntity = session.get(CustomerEntity.class, uid);
+        session.close();
+        sessionFactory.close();
+        return customerEntity;
+    }
+
     @Override
     public void update(CustomerEntity entity) {
         cfg = new Configuration();

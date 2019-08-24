@@ -6,10 +6,9 @@ import javax.persistence.*;
 @Table(name = "producer", schema = "everitoken", catalog = "")
 public class ProducerEntity {
     private int producerUid;
-    private String producerEmail;
     private String producerName;
     private String producerPrivateKey;
-    private Byte authorized;
+    private Byte producerAuthorized;
     private String producerChnCode;
 
     @Id
@@ -23,15 +22,6 @@ public class ProducerEntity {
         this.producerUid = producerUid;
     }
 
-    @Basic
-    @Column(name = "producer_email")
-    public String getProducerEmail() {
-        return producerEmail;
-    }
-
-    public void setProducerEmail(String producerEmail) {
-        this.producerEmail = producerEmail;
-    }
 
     @Basic
     @Column(name = "producer_name")
@@ -54,13 +44,13 @@ public class ProducerEntity {
     }
 
     @Basic
-    @Column(name = "authorized")
-    public Byte getAuthorized() {
-        return authorized;
+    @Column(name = "producer_authorized")
+    public Byte getProducerAuthorized() {
+        return producerAuthorized;
     }
 
-    public void setAuthorized(Byte authorized) {
-        this.authorized = authorized;
+    public void setProducerAuthorized(Byte producerAuthorized) {
+        this.producerAuthorized = producerAuthorized;
     }
 
     @Basic
@@ -81,12 +71,10 @@ public class ProducerEntity {
         ProducerEntity that = (ProducerEntity) o;
 
         if (producerUid != that.producerUid) return false;
-        if (producerEmail != null ? !producerEmail.equals(that.producerEmail) : that.producerEmail != null)
-            return false;
         if (producerName != null ? !producerName.equals(that.producerName) : that.producerName != null) return false;
         if (producerPrivateKey != null ? !producerPrivateKey.equals(that.producerPrivateKey) : that.producerPrivateKey != null)
             return false;
-        if (authorized != null ? !authorized.equals(that.authorized) : that.authorized != null) return false;
+        if (producerAuthorized != null ? !producerAuthorized.equals(that.producerAuthorized) : that.producerAuthorized != null) return false;
         if (producerChnCode != null ? !producerChnCode.equals(that.producerChnCode) : that.producerChnCode != null)
             return false;
 
@@ -96,10 +84,9 @@ public class ProducerEntity {
     @Override
     public int hashCode() {
         int result = producerUid;
-        result = 31 * result + (producerEmail != null ? producerEmail.hashCode() : 0);
         result = 31 * result + (producerName != null ? producerName.hashCode() : 0);
         result = 31 * result + (producerPrivateKey != null ? producerPrivateKey.hashCode() : 0);
-        result = 31 * result + (authorized != null ? authorized.hashCode() : 0);
+        result = 31 * result + (producerAuthorized != null ? producerAuthorized.hashCode() : 0);
         result = 31 * result + (producerChnCode != null ? producerChnCode.hashCode() : 0);
         return result;
     }
