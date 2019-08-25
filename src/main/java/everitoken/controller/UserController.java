@@ -347,4 +347,18 @@ public class UserController {
         res.put("msg", "用户没有登陆");
         return res;
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ResponseBody
+    public Object logout(HttpSession httpSession){
+        if(httpSession.getAttribute("uid") == null || (int)httpSession.getAttribute("uid") <= 0){
+            res.put("code", 20003);
+            res.put("msg", "用户没有登陆");
+            return res;
+        }
+        httpSession.setAttribute("uid", -1);
+        res.put("code", 0);
+        res.put("msg", "success");
+        return res;
+    }
 }
