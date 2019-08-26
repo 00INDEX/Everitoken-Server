@@ -19,7 +19,25 @@ public class ProducterRepositoryImpl implements ProducterRepository {
 
     @Override
     public ProducerEntity get(Integer id) {
-        return null;
+        ProducerEntity c = null;
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            c = session.get(ProducerEntity.class, id);
+        }catch (Exception e){
+            e.printStackTrace();
+            Exception exception = new Exception("数据库异常");
+            //throw exception;
+        }finally {
+            transaction.commit();
+            session.close();
+            sessionFactory.close();
+        }
+        return c;
     }
 
     @Override
@@ -60,11 +78,16 @@ public class ProducterRepositoryImpl implements ProducterRepository {
      * @return
      */
     public ProducerEntity getById(int uid){
+        ProducerEntity producerEntity = null;
         cfg = new Configuration();
         cfg.configure();
         SessionFactory sessionFactory = cfg.buildSessionFactory();
         Session session = sessionFactory.openSession();
-        ProducerEntity producerEntity = session.get(ProducerEntity.class, uid);
+        try {
+            producerEntity = session.get(ProducerEntity.class, uid);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         session.close();
         sessionFactory.close();
         return producerEntity;

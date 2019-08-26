@@ -5,20 +5,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "producer", schema = "everitoken", catalog = "")
 public class ProducerEntity {
-    private int producerUid;
+    private Integer producerUid;
     private String producerName;
     private String producerPrivateKey;
-    private Byte producerAuthorized;
+    private String producerAuthorized;
     private String producerChnCode;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "producer_uid")
-    public int getProducerUid() {
+    public Integer getProducerUid() {
         return producerUid;
     }
 
-    public void setProducerUid(int producerUid) {
+    public void setProducerUid(Integer producerUid) {
         this.producerUid = producerUid;
     }
 
@@ -45,11 +45,11 @@ public class ProducerEntity {
 
     @Basic
     @Column(name = "producer_authorized")
-    public Byte getProducerAuthorized() {
+    public String getProducerAuthorized() {
         return producerAuthorized;
     }
 
-    public void setProducerAuthorized(Byte producerAuthorized) {
+    public void setProducerAuthorized(String producerAuthorized) {
         this.producerAuthorized = producerAuthorized;
     }
 
@@ -70,7 +70,7 @@ public class ProducerEntity {
 
         ProducerEntity that = (ProducerEntity) o;
 
-        if (producerUid != that.producerUid) return false;
+        if (producerUid != null ? !producerUid.equals(that.producerUid) : that.producerUid != null) return false;
         if (producerName != null ? !producerName.equals(that.producerName) : that.producerName != null) return false;
         if (producerPrivateKey != null ? !producerPrivateKey.equals(that.producerPrivateKey) : that.producerPrivateKey != null)
             return false;

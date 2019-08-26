@@ -32,7 +32,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         }catch (Exception e){
             e.printStackTrace();
             Exception exception = new Exception("数据库异常");
-            //throw exception;
         }finally {
             transaction.commit();
             session.close();
@@ -71,23 +70,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         session.close();
         sessionFactory.close();
         return uid;
-    }
-
-    /**
-     * 根据邮箱查询数据
-     * @param email 用户邮箱
-     * @return
-     */
-    public CustomerEntity getByEmail(String email) {
-        cfg = new Configuration();
-        cfg.configure();
-        SessionFactory sessionFactory = cfg.buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from CustomerEntity customer where customer.customerEmail = :email");
-        query.setParameter("email", email);
-        CustomerEntity customerEntity = (CustomerEntity)query.getSingleResult();
-        return customerEntity;
     }
 
     /**

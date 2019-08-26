@@ -4,6 +4,9 @@ import everitoken.dao.GovernmentRepository;
 import everitoken.dao.RecyclingStationRepository;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,8 @@ public class UserController {
     private GovernmentRepositoryImpl governmentRepository;
     private RecyclingStationRepositoryImpl recyclingStationRepository;
     private Map<String, Object> res;
+
+
     /**
      * 客户注册方法
      * @param httpSession session数据
@@ -294,7 +299,9 @@ public class UserController {
             return res;
         }
 
-
+        producterRepository = new ProducterRepositoryImpl();
+        governmentRepository = new GovernmentRepositoryImpl();
+        recyclingStationRepository = new RecyclingStationRepositoryImpl();
         int uid = (int)httpSession.getAttribute("uid");
         try {
             UserEntity userEntity = userRepository.getById(uid);
@@ -309,7 +316,7 @@ public class UserController {
                     info.put("sex", customerEntity.getCustomerSex());
                     break;
                 case 1:
-                    ProducerEntity producerEntity = producterRepository.getById((int)userEntity.getInfoId());
+                    ProducerEntity producerEntity = producterRepository.getById(1);
                     info.put("producer_name", producerEntity.getProducerName());
                     info.put("producer_CHNCode", producerEntity.getProducerChnCode());
                     break;
