@@ -95,7 +95,23 @@ public class ProducterRepositoryImpl implements ProducterRepository {
 
     @Override
     public void update(ProducerEntity entity) {
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
 
+        try {
+            session.saveOrUpdate(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+            Exception exception = new Exception("数据库异常");
+            //throw exception;
+        }finally {
+            transaction.commit();
+            session.close();
+            sessionFactory.close();
+        }
     }
 
     @Override

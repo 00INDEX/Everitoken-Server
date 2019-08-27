@@ -222,7 +222,7 @@ public class UserController {
         if (data.containsKey("email")) userEntity.setEmail(data.get("email").toString());
         /**
          * todo 加入everitoken之后再编辑此区域
-        if (data.containsKey("rs_private_key")) recylingStationEntity.setRsPrivateKey(data.get("rs_private_key").toString());
+        if (data.containsKey("rs_private_key")) recyclingStationEntity.setRsPrivateKey(data.get("rs_private_key").toString());
          */
         userEntity.setType(3);
         int uid = -1;
@@ -367,5 +367,48 @@ public class UserController {
         res.put("code", 0);
         res.put("msg", "success");
         return res;
+    }
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updatePassword(HttpSession httpSession, @RequestBody Map<String, Object> data){
+        res = new HashMap<>();
+        if(httpSession.getAttribute("uid") == null || (int)httpSession.getAttribute("uid") <= 0){
+            res.put("code", 20003);
+            res.put("msg", "用户没有登陆");
+            return res;
+        }
+        UserEntity userEntity;
+        userRepository = new UserRepositoryImpl();
+        if (data.containsKey("username") && data.containsKey("password") && data.containsKey("new_password") && data.containsKey("confirmation_password")){
+            userEntity = userRepository.getByUsername((String) data.get("username"));
+            if(userEntity == null){
+                res.put("code", 20005);
+                res.put("msg", "该用户不存在");
+                return res;
+            }
+            if (userEntity.getPassword().equals((String)data.get("password"))){
+                if(data.get("new_password").equals(data.get("confirmation_password"))){
+                    userEntity.setPassword((String)data.get("new_password"));
+                    userRepository.update(userEntity);
+                    res.put("code", 0);
+                    res.put("msg", "success");
+                    res.put("type", userEntity.getType());
+                    return res;
+                }else{
+                    res.put("code", 20007);
+                    res.put("msg", "新密码与确认密码不一致");
+                    return res;
+                }
+            }else{
+                res.put("code", 20004);
+                res.put("msg", "用户名或者密码错误");
+                return res;
+            }
+        }else{
+            res.put("code", 20001);
+            res.put("msg", "缺失必要字段");
+            return res;
+        }
     }
 }
