@@ -375,6 +375,7 @@ public class UserController {
         res = new HashMap<>();
         UserEntity userEntity;
         userRepository = new UserRepositoryImpl();
+
         if (data.containsKey("username") && data.containsKey("password") && data.containsKey("new_password") && data.containsKey("confirmation_password")){
             userEntity = userRepository.getByUsername((String) data.get("username"));
             if(userEntity == null){
@@ -407,5 +408,24 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/updateEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateEmail(HttpSession httpSession, @RequestBody Map<String, Object> data){
+        res = new HashMap<>();
+        UserEntity userEntity;
+        userRepository = new UserRepositoryImpl();
+        if(httpSession.getAttribute("uid") == null || (int)httpSession.getAttribute("uid") <= 0){
+            res.put("code", 20003);
+            res.put("msg", "用户没有登陆");
+            return res;
+        }
+            Map info = (Map)((Map)getUserInfo(httpSession)).get("data");
+            userEntity = userRepository.getByUsername((String) data.get(info.get("username")));
+            userEntity.setEmail((String)data.get("new_email"));
+            userRepository.update(userEntity);
+        res.put("code", 0);
+        res.put("msg", "success");
+        return res;
+    }
 
 }
