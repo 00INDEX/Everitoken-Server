@@ -373,11 +373,6 @@ public class UserController {
     @ResponseBody
     public Object updatePassword(HttpSession httpSession, @RequestBody Map<String, Object> data){
         res = new HashMap<>();
-        if(httpSession.getAttribute("uid") == null || (int)httpSession.getAttribute("uid") <= 0){
-            res.put("code", 20003);
-            res.put("msg", "用户没有登陆");
-            return res;
-        }
         UserEntity userEntity;
         userRepository = new UserRepositoryImpl();
         if (data.containsKey("username") && data.containsKey("password") && data.containsKey("new_password") && data.containsKey("confirmation_password")){
@@ -411,4 +406,6 @@ public class UserController {
             return res;
         }
     }
+
+
 }
