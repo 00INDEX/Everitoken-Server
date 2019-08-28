@@ -23,5 +23,15 @@
     <mapping class="everitoken.entity.ProducerEntity"/>
     <mapping resource="RecylingStationEntity.hbm.xml"/>
     <mapping class="everitoken.entity.RecyclingStationEntity"/>
+    <mapping resource="ApplicationEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.ApplicationEntity"/>
+    <mapping resource="BatteryEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.BatteryEntity"/>
+    <mapping resource="BatteryTypeEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.BatteryTypeEntity"/>
+    <mapping class="everitoken.entity.ProcessEntity"/>
+    <mapping resource="ProcessEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.PublicKeyEntity"/>
+    <mapping resource="PublicKeyEntity.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

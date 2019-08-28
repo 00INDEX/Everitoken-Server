@@ -28,7 +28,11 @@ public class UserController {
     private RecyclingStationRepositoryImpl recyclingStationRepository;
     private Map<String, Object> res;
 
-
+    @RequestMapping(value = "test")
+    @ResponseBody
+    public Object test(){
+        return "11111";
+    }
     /**
      * 客户注册方法
      * @param httpSession session数据

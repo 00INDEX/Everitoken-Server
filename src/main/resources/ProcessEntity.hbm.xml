@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="everitoken.entity.ProcessEntity" table="process" schema="everitoken">
+        <id name="uid" column="uid"><generator class="identity"/></id>
+        <property name="applicantUid" column="applicant_uid"/>
+        <property name="processorUid" column="processor_uid"/>
+        <property name="processTime" column="process_time"/>
+        <property name="processReason" column="process_reason"/>
+    </class>
+</hibernate-mapping>
