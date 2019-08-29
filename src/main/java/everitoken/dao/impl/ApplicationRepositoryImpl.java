@@ -45,4 +45,17 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     public void flush() {
 
     }
+    @Override
+    public List getByAId(Integer id) {
+
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from ApplicationEntity application where application.applicantUid = :id");
+        query.setParameter("id", id);
+        List applicationEntities = query.getResultList();
+        return applicationEntities;
+    }
 }
