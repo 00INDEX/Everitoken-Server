@@ -423,10 +423,42 @@ public class UserController {
             res.put("msg", "用户没有登陆");
             return res;
         }
-            Map info = (Map)((Map)getUserInfo(httpSession)).get("data");
-            userEntity = userRepository.getByUsername((String) data.get(info.get("username")));
-            userEntity.setEmail((String)data.get("new_email"));
-            userRepository.update(userEntity);
+        if (!data.containsKey("new_email")){
+            res.put("code", 20001);
+            res.put("msg", "缺失必要字段");
+            return res;
+        }
+        Map info = (Map)((Map)getUserInfo(httpSession)).get("data");
+        userEntity = userRepository.getByUsername((String) data.get(info.get("username")));
+        userEntity.setEmail((String)data.get("new_email"));
+        userRepository.update(userEntity);
+        res.put("code", 0);
+        res.put("msg", "success");
+        return res;
+    }
+
+    @RequestMapping(value = "/customer/updatePhone", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateCustomerPhone(HttpSession httpSession, @RequestBody Map<String, Object> data){
+        res = new HashMap<>();
+        CustomerEntity customerEntity;
+        UserEntity userEntity;
+        userRepository = new UserRepositoryImpl();
+        if(httpSession.getAttribute("uid") == null || (int)httpSession.getAttribute("uid") <= 0){
+            res.put("code", 20003);
+            res.put("msg", "用户没有登陆");
+            return res;
+        }
+        if (!data.containsKey("new_phone")){
+            res.put("code", 20001);
+            res.put("msg", "缺失必要字段");
+            return res;
+        }
+        Map info = (Map)((Map)getUserInfo(httpSession)).get("data");
+        userEntity = userRepository.getByUsername((String) data.get(info.get("username")));
+        customerEntity = customerRepository.getById(userEntity.getInfoId());
+        customerEntity.setCustomerPhone((String)data.get("new_phone"));
+        customerRepository.update(customerEntity);
         res.put("code", 0);
         res.put("msg", "success");
         return res;
