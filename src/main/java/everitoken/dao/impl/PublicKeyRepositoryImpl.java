@@ -45,4 +45,17 @@ public class PublicKeyRepositoryImpl implements PublicKeyRepository {
     public void flush() {
 
     }
+    @Override
+    public PublicKeyEntity getByPK(Integer id) {
+
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from PublicKeyEntity public_key where public_key.publicKey = :id");
+        query.setParameter("id", id);
+        PublicKeyEntity applicationEntities = (PublicKeyEntity) query.getSingleResult();
+        return applicationEntities;
+    }
 }
