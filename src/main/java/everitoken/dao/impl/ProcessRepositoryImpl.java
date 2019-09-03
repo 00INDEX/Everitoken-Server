@@ -2,10 +2,16 @@ package everitoken.dao.impl;
 
 import everitoken.dao.ProcessRepository;
 import everitoken.entity.ProcessEntity;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class ProcessRepositoryImpl implements ProcessRepository {
+    private Configuration cfg;
     @Override
     public ProcessEntity load(Integer id) {
         return null;
@@ -45,7 +51,7 @@ public class ProcessRepositoryImpl implements ProcessRepository {
     public void flush() {
 
     }
-    @Override
+
     public List getByPId(Integer id) {
 
         cfg = new Configuration();

@@ -2,10 +2,16 @@ package everitoken.dao.impl;
 
 import everitoken.dao.PublicKeyRepository;
 import everitoken.entity.PublicKeyEntity;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class PublicKeyRepositoryImpl implements PublicKeyRepository {
+    private Configuration cfg;
     @Override
     public PublicKeyEntity load(Integer id) {
         return null;
@@ -45,7 +51,7 @@ public class PublicKeyRepositoryImpl implements PublicKeyRepository {
     public void flush() {
 
     }
-    @Override
+
     public PublicKeyEntity getByPK(Integer id) {
 
         cfg = new Configuration();

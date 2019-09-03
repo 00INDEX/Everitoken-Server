@@ -2,19 +2,15 @@ package everitoken.controller;
 
 import EveritokenSDK.Action;
 import EveritokenSDK.Info;
-import com.sun.corba.se.impl.logging.InterceptorsSystemException;
 import everitoken.Operations.Operate;
-import everitoken.dao.*;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
-import javafx.beans.property.ObjectProperty;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +54,7 @@ public class GetInfoController {
             res.put("msg","没有ID");
             return res;
         }
-        ProcessRepository processRepository = new ProcessRepositoryImpl();
+        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
         List<ProcessEntity> processEntities = processRepository.getByPId(Integer.parseInt(data.get("id").toString()));
         if(processEntities==null||processEntities.size()==0){
             res.put("code",10005);
@@ -115,7 +111,7 @@ public class GetInfoController {
             res.put("msg","没有ID");
             return res;
         }
-        ApplicationRepository applicationRepository = new ApplicationRepositoryImpl();
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
         List<ApplicationEntity> applicationEntities = applicationRepository.getByAId(Integer.parseInt(data.get("id").toString()));
         if(applicationEntities==null){
             res.put("code",10005);

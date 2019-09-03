@@ -1,12 +1,7 @@
 package everitoken.controller;
 
-import everitoken.dao.GovernmentRepository;
-import everitoken.dao.RecyclingStationRepository;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -404,7 +399,7 @@ public class UserController {
                 res.put("code", 20004);
                 res.put("msg", "用户名或者密码错误");
                 return res;
-            }
+        }
         }else{
             res.put("code", 20001);
             res.put("msg", "缺失必要字段");

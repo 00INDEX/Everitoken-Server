@@ -2,10 +2,16 @@ package everitoken.dao.impl;
 
 import everitoken.dao.ApplicationRepository;
 import everitoken.entity.ApplicationEntity;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class ApplicationRepositoryImpl implements ApplicationRepository {
+    private Configuration cfg;
     @Override
     public ApplicationEntity load(Integer id) {
         return null;
@@ -45,7 +51,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     public void flush() {
 
     }
-    @Override
+
     public List getByAId(Integer id) {
 
         cfg = new Configuration();

@@ -1,7 +1,6 @@
 package everitoken.controller;
 
 import EveritokenSDK.Action;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import everitoken.dao.CustomerRepository;
 import everitoken.dao.impl.CustomerRepositoryImpl;
 import everitoken.entity.CustomerEntity;
