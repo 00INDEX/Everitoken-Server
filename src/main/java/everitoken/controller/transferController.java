@@ -1,6 +1,6 @@
 package everitoken.controller;
 
-import EveritokenSDK.Action;
+import everitoken.EveriTokenOperation.Action;
 import everitoken.dao.CustomerRepository;
 import everitoken.dao.impl.CustomerRepositoryImpl;
 import everitoken.entity.CustomerEntity;
@@ -21,8 +21,9 @@ public class transferController{
    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    private Map<String,Object> Condition = new HashMap<>();
    private Map<String, Date> timeMap = new HashMap<>();
+   private Map<String,String> ID_Code_Battery = new HashMap<>();
    private Action action = new Action();
-    @RequestMapping(value = "/sell",method = RequestMethod.POST)
+    @RequestMapping(value = "/sell/begin",method = RequestMethod.POST)
     @ResponseBody
     public Object Customer_transfer_Beginner(@RequestBody Map<String,Object> data){//发起者的ID，识别码
         Integer ID ;
@@ -39,12 +40,16 @@ public class transferController{
         }
         if(data.containsKey("ID_code")){
             ID_code=data.get("ID_code").toString();
-
         }
         else
         {
             res.put("code",10001);
             res.put("msg","识别码");
+            return res;
+        }
+        if (!data.containsKey("BatteryName")){
+            res.put("code",10001);
+            res.put("msg","没有电池名称");
             return res;
         }
         if(Condition.containsKey(ID)){
@@ -53,6 +58,9 @@ public class transferController{
             return res;
         }
         Condition.put(ID.toString(),ID_code);
+        Condition.put(ID_code,ID.toString());
+        ID_Code_Battery.put(ID_code,data.get("BatteryName").toString());
+        timeMap.put(ID.toString(),new Date());
         res.put("code",0);
         res.put("msg","等待对方确认");
         return res;
@@ -70,7 +78,7 @@ public class transferController{
             {
                 if(timeMap.containsKey(Stater_ID)&&expired(timeMap.get(Stater_ID),new Date(),Stater_ID))
                 {
-                    if(Condition.get(Stater_ID).equals(data.get("ID_code"))){
+                    if(Condition.get(Stater_ID).equals(data.get("ID_code").toString())){
                         res.put("code",10003);
                         res.put("msg","识别码不匹配");
                         return res;
@@ -87,6 +95,7 @@ public class transferController{
                     if(action.transferBattery(Battery_name,privateKey,publicKey))
                     {
                         Condition.remove(Stater_ID);
+                        Condition.remove(data.get("ID_code").toString());
                         res.put("code",0);
                         res.put("msg","交易成功");
                         return res;
@@ -102,15 +111,17 @@ public class transferController{
         return false;
     }
 
-    @RequestMapping(value = "/sell/Cancel",method = RequestMethod.POST)
+    @RequestMapping(value = "/sell/cancel",method = RequestMethod.POST)
     @ResponseBody
     public Object Cancel(@RequestBody Map<String,Object> data){//用户id
         Map<String,Object> res = new HashMap<>();
         if(data.containsKey("id"))
         {
+            String ID_code = Condition.get(data.get("id").toString()).toString();
             Condition.remove(data.get("id").toString());
+            Condition.remove(ID_code);
             timeMap.remove(data.get("id").toString());
-            res.put("code",1);
+            res.put("code",0);
             res.put("mes","成功");
         }
         else
@@ -121,12 +132,32 @@ public class transferController{
         }
         return res;
     }
+
+    @RequestMapping(value = "/sell/GetTransactionInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Object GetTransactionInfo(@RequestBody Map<String,Object>data){
+        Map<String,Object> res=new HashMap<>();
+        if(!data.containsKey("ID_code")){
+            res.put("code",10001);
+            res.put("msg","识别码");
+            return res;
+        }
+        else{
+            String ID_code=data.get("ID_code").toString();
+            res.put("BatteryName",ID_Code_Battery.get(ID_code));
+            res.put("Owner",Condition.get(ID_code));
+        }
+
+        return res;
+    }
     private boolean expired(Date OldDate, Date NewDate,String ID){//查看交易是否过期
         long Old =  OldDate.getTime();
         long New =  NewDate.getTime();
-        if((New-Old)<=1000*60*2){
+        if((New-Old)<=1000*60*5){
+            String ID_code = Condition.get(ID).toString();
             timeMap.remove(ID);
-            //Condition.remove(ID);
+            Condition.remove(ID);
+            Condition.remove(ID_code);
             return true;
         }
         return false;
