@@ -1,5 +1,6 @@
 package everitoken.controller;
 
+
 import everitoken.dao.ApplicationRepository;
 import everitoken.dao.ProcessRepository;
 import everitoken.dao.impl.ApplicationRepositoryImpl;
@@ -11,7 +12,12 @@ import everitoken.entity.ProducerEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import everitoken.Operations.Operate.*;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +27,7 @@ import static everitoken.Operations.Operate.*;
 @Controller
 @RequestMapping(value = "/Authorize")
 public class AuthorizeController {
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @RequestMapping(value = "/Apply",method = RequestMethod.POST)
     @ResponseBody
     public Object Apply(@RequestBody Map<String,Object>data) throws Exception {//function:申请授权;need:申请者ID，申请文件,申请时间
@@ -38,6 +45,12 @@ public class AuthorizeController {
         if(!data.containsKey("ApplicationTime")){
             res.put("code",10001);
             res.put("msg", "缺少申请时间");
+            return res;
+        }
+        ProducerEntity producerEntity=GetProducer(Integer.parseInt(data.get("ApplicantID").toString()));
+        if (producerEntity==null){
+            res.put("code",10005);
+            res.put("msg","ID不存在数据库");
             return res;
         }
         Timestamp time = Timestamp.valueOf(data.get("ApplicationTime").toString());
