@@ -1,16 +1,21 @@
 package everitoken.controller;
 
-import EveritokenSDK.Action;
-import EveritokenSDK.Info;
+import everitoken.EveriTokenOperation.Action;
+import everitoken.EveriTokenOperation.Info;
+import com.sun.corba.se.impl.logging.InterceptorsSystemException;
 import everitoken.Operations.Operate;
+import everitoken.dao.*;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
+import javafx.beans.property.ObjectProperty;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +25,7 @@ import static everitoken.Operations.Operate.*;
 @Controller
 @RequestMapping(value = "/Info")
 public class GetInfoController {
+    private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @RequestMapping(value = "/PastOwner",method = RequestMethod.POST)
     @ResponseBody
     public Object GetPastOwner(@RequestBody Map<String,Object> data)//function：获得一个电池的交易记录 need：电池名称
@@ -27,8 +33,8 @@ public class GetInfoController {
         Map<String,Object> res=new HashMap<>();
         Info info=new Info();
         String[] PastOwner;
-        if(data.containsKey("Battery_Name"))
-        PastOwner=info.getSource(data.get("Battery_Name").toString());
+        if(data.containsKey("BatteryName"))
+        PastOwner=info.getSource(data.get("BatteryName").toString());
         else
         {
             res.put("code",10001);
@@ -54,11 +60,11 @@ public class GetInfoController {
             res.put("msg","没有ID");
             return res;
         }
-        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
+        ProcessRepository processRepository = new ProcessRepositoryImpl();
         List<ProcessEntity> processEntities = processRepository.getByPId(Integer.parseInt(data.get("id").toString()));
         if(processEntities==null||processEntities.size()==0){
             res.put("code",10005);
-            res.put("msg","ID不存在");
+            res.put("msg","ID不存在数据库");
             return res;
         }
         int i=processEntities.size();
@@ -80,7 +86,7 @@ public class GetInfoController {
         ProcessEntity processEntity = GetProcess(Integer.parseInt(data.get("id").toString()));
         if(processEntity==null){
             res.put("code",10005);
-            res.put("msg","ID不存在");
+            res.put("msg","ID不存在数据库");
             return res;
         }
         return Operate.GetProcessInfo(processEntity);
@@ -111,11 +117,11 @@ public class GetInfoController {
             res.put("msg","没有ID");
             return res;
         }
-        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
+        ApplicationRepository applicationRepository = new ApplicationRepositoryImpl();
         List<ApplicationEntity> applicationEntities = applicationRepository.getByAId(Integer.parseInt(data.get("id").toString()));
         if(applicationEntities==null){
             res.put("code",10005);
-            res.put("msg","ID不存在");
+            res.put("msg","ID不存在数据库");
             return res;
         }
         int i=applicationEntities.size();
@@ -145,7 +151,7 @@ public class GetInfoController {
         type = Integer.parseInt(data.get("type").toString());
         ID = Integer.parseInt(data.get("id").toString());
         switch (type){
-            case 1:{
+            case 0:{
                 CustomerEntity customerEntity = GetCustomer(ID);
                 if(customerEntity==null)
                     return IDExist();
@@ -164,7 +170,7 @@ public class GetInfoController {
                 }
                 return GetRSInfo(recyclingStationEntity);
             }
-            case 4:{
+            case 1:{
                 ProducerEntity producerEntity=GetProducer(ID);
                 if(producerEntity==null){
                     return IDExist();
@@ -243,12 +249,12 @@ public class GetInfoController {
         }
         if(Batteries == null) {
             res.put("code", 11004);
-            res.put("msg", "查询电池所有者失败");
+            res.put("msg", "查询所有电池失败失败");
             return res;
         }
         res.put("code", 0);
-        res.put("msg", "成功返回数据");
-        res.put("Batteries", Batteries);
+        //res.put("msg", "成功返回数据");
+        res.put("msg", Batteries);
 
         return res;
     }
