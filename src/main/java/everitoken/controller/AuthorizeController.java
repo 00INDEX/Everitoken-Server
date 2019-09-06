@@ -5,6 +5,7 @@ import everitoken.dao.ApplicationRepository;
 import everitoken.dao.ProcessRepository;
 import everitoken.dao.impl.ApplicationRepositoryImpl;
 import everitoken.dao.impl.ProcessRepositoryImpl;
+import everitoken.dao.impl.ProducterRepositoryImpl;
 import everitoken.entity.ApplicationEntity;
 import everitoken.entity.GovernmentEntity;
 import everitoken.entity.ProcessEntity;
@@ -48,6 +49,7 @@ public class AuthorizeController {
             return res;
         }
         ProducerEntity producerEntity=GetProducer(Integer.parseInt(data.get("ApplicantID").toString()));
+
         if (producerEntity==null){
             res.put("code",10005);
             res.put("msg","ID不存在数据库");
@@ -55,13 +57,13 @@ public class AuthorizeController {
         }
         Timestamp time = Timestamp.valueOf(data.get("ApplicationTime").toString());
         ApplicationEntity applicationEntity=new ApplicationEntity();
-        ApplicationRepository applicationRepository = new ApplicationRepositoryImpl();
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
         applicationEntity.setApplicantUid(Integer.parseInt(data.get("ApplicantID").toString()));
         applicationEntity.setApplicationDocuments(data.get("ApplicationDocument").toString());
         applicationEntity.setApplicationTime(time);
-        applicationRepository.add(applicationEntity);
+        int id = applicationRepository.add(applicationEntity);
         res.put("code",0);
-        res.put("ID",applicationEntity.getUid());
+        res.put("ID",id);
         return res;
     }
     @RequestMapping(value = "/SetAuthorize",method = RequestMethod.POST)
@@ -69,7 +71,7 @@ public class AuthorizeController {
     public Object SetAuthorize(@RequestBody Map<String,Object>data) throws Exception {//function:政府授权;need:政府ID,政府授权时间,授权值，授权理由，申请者ID,申请的UID
         Map<String,Object> res = new HashMap<>();
         if(!data.containsKey("ApplicantID")&&!data.containsKey("GovernmentID")&&!data.containsKey("AuthorizeTime")&&!data.containsKey("AuthorizeValue")
-        &&!data.containsKey("AuthorizeReason")&&!data.containsKey("ApplicantUid"))
+        &&!data.containsKey("AuthorizeReason")&&!data.containsKey("ApplicationUid"))
         {
             res.put("code",10001);
             res.put("msg","缺少必要字段");
@@ -82,7 +84,8 @@ public class AuthorizeController {
         GovernmentEntity governmentEntity = GetGovernment(G_ID);
         ApplicationEntity applicationEntity = GetApplication(A_ID);
         ProcessEntity processEntity =new ProcessEntity();
-        ProcessRepository processRepository = new ProcessRepositoryImpl();
+        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
+        ProducterRepositoryImpl producterRepository = new ProducterRepositoryImpl();
         if(producerEntity==null||governmentEntity==null||applicationEntity==null){
             return IDExist();
         }
@@ -97,6 +100,8 @@ public class AuthorizeController {
         processEntity.setProcessTime(Timestamp.valueOf(data.get("AuthorizeTime").toString()));
         processEntity.setProcessorUid(governmentEntity.getGovernmentUid());
         processRepository.add(processEntity);
+        producerEntity.setProducerAuthorized((Boolean)data.get("AuthorizeValue"));
+        producterRepository.update(producerEntity);
         res.put("code",0);
         res.put("msg","success");
         return res;

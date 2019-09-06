@@ -56,31 +56,31 @@ public class Operate {
 
     public static CustomerEntity GetCustomer(Integer ID){
         CustomerEntity customerEntity;
-        CustomerRepository customerRepository = new CustomerRepositoryImpl();
+        CustomerRepositoryImpl customerRepository = new CustomerRepositoryImpl();
         customerEntity= customerRepository.get(ID);
         return customerEntity;
     }
     public static GovernmentEntity GetGovernment(Integer ID){
         GovernmentEntity customerEntity;
-        GovernmentRepository customerRepository = new GovernmentRepositoryImpl();
-        customerEntity= customerRepository.get(ID);
+        GovernmentRepositoryImpl customerRepository = new GovernmentRepositoryImpl();
+        customerEntity= customerRepository.getById(ID);
         return customerEntity;
     }
     public static ProducerEntity GetProducer(Integer ID){
         ProducerEntity producerEntity;
-        ProducterRepository producterRepository=new ProducterRepositoryImpl();
-        producerEntity=producterRepository.get(ID);
+        ProducterRepositoryImpl producterRepository=new ProducterRepositoryImpl();
+        producerEntity=producterRepository.getById(ID);
         return producerEntity;
     }
     public static RecyclingStationEntity GetRS(Integer ID){
         RecyclingStationEntity producerEntity;
-        RecyclingStationRepository producterRepository=new RecyclingStationRepositoryImpl();
+        RecyclingStationRepositoryImpl producterRepository=new RecyclingStationRepositoryImpl();
         producerEntity=producterRepository.get(ID);
         return producerEntity;
     }
     public static BatteryEntity GetBattery(Integer ID){
         BatteryEntity batteryEntity;
-        BatteryRepository batteryRepository = new BatteryRepositoryImpl();
+        BatteryRepositoryImpl batteryRepository = new BatteryRepositoryImpl();
         batteryEntity = batteryRepository.get(ID);
         return batteryEntity;
     }
@@ -92,14 +92,14 @@ public class Operate {
     }
     public static ApplicationEntity GetApplication(Integer ID){
         ApplicationEntity applicationEntity;
-        ApplicationRepository applicationRepository=new ApplicationRepositoryImpl();
-        applicationEntity = applicationRepository.get(ID);
+        ApplicationRepositoryImpl applicationRepository=new ApplicationRepositoryImpl();
+        applicationEntity = applicationRepository.getById(ID);
         return applicationEntity;
     }
 
     public static ProcessEntity GetProcess(Integer ID){
         ProcessEntity processEntity;
-        ProcessRepository processRepository = new ProcessRepositoryImpl();
+        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
         processEntity = processRepository.get(ID);
         return processEntity;
     }
@@ -120,7 +120,7 @@ public class Operate {
         PublicKeyEntity publicKeyEntity;
         UserEntity userEntity;
         PublicKeyRepositoryImpl publicKeyRepository = new PublicKeyRepositoryImpl();
-        UserRepository userRepository = new UserRepositoryImpl();
+        UserRepositoryImpl userRepository = new UserRepositoryImpl();
         int i;
         int j=Past.length;
         for(i=0;i<j;i++){

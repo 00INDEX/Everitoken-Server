@@ -11,6 +11,7 @@ public class BatteryEntity {
     private String batteryMaxVoltage;
     private String batteryAverageTemperature;
     private Integer batteryChgCycles;
+    private String batteryName;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -41,6 +42,16 @@ public class BatteryEntity {
 
     public void setBatteryType(Integer batteryType) {
         this.batteryType = batteryType;
+    }
+
+    @Basic
+    @Column(name = "battery_name")
+    public String getBatteryName() {
+        return batteryName;
+    }
+
+    public void setBatteryName(String batteryName) {
+        this.batteryName = batteryName;
     }
 
     @Basic
@@ -90,7 +101,8 @@ public class BatteryEntity {
             return false;
         if (batteryChgCycles != null ? !batteryChgCycles.equals(that.batteryChgCycles) : that.batteryChgCycles != null)
             return false;
-
+        if (batteryName != null ? !batteryName.equals(that.batteryName) : that.batteryName != null)
+            return false;
         return true;
     }
 
@@ -102,6 +114,7 @@ public class BatteryEntity {
         result = 31 * result + (batteryMaxVoltage != null ? batteryMaxVoltage.hashCode() : 0);
         result = 31 * result + (batteryAverageTemperature != null ? batteryAverageTemperature.hashCode() : 0);
         result = 31 * result + (batteryChgCycles != null ? batteryChgCycles.hashCode() : 0);
+        result = 31 * result + (batteryName != null ? batteryName.hashCode() : 0);
         return result;
     }
 }

@@ -2,19 +2,16 @@ package everitoken.controller;
 
 import everitoken.EveriTokenOperation.Action;
 import everitoken.EveriTokenOperation.Info;
-import com.sun.corba.se.impl.logging.InterceptorsSystemException;
 import everitoken.Operations.Operate;
 import everitoken.dao.*;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
-import javafx.beans.property.ObjectProperty;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +57,7 @@ public class GetInfoController {
             res.put("msg","没有ID");
             return res;
         }
-        ProcessRepository processRepository = new ProcessRepositoryImpl();
+        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
         List<ProcessEntity> processEntities = processRepository.getByPId(Integer.parseInt(data.get("id").toString()));
         if(processEntities==null||processEntities.size()==0){
             res.put("code",10005);
@@ -117,7 +114,7 @@ public class GetInfoController {
             res.put("msg","没有ID");
             return res;
         }
-        ApplicationRepository applicationRepository = new ApplicationRepositoryImpl();
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
         List<ApplicationEntity> applicationEntities = applicationRepository.getByAId(Integer.parseInt(data.get("id").toString()));
         if(applicationEntities==null){
             res.put("code",10005);
@@ -132,9 +129,20 @@ public class GetInfoController {
         return res;
     }
 
+    @RequestMapping(value = "/GetAllApplicationInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object GetAllApplicationInfo(){
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
+        List result =  applicationRepository.findAll();
+        Map<String,Object> res=new HashMap<>();
+        res.put("code", 0);
+        res.put("data", result);
+        return res;
+    }
+
     @RequestMapping(value = "/BasicInfo",method = RequestMethod.POST)
     @ResponseBody
-    public Object GetBasicInfo(@RequestBody Map<String,Object>data){//function:获取用户基础信息;need:用户id，用户类型
+    public Object GetBasicInfo(@RequestBody Map<String,Object> data){//function:获取用户基础信息;need:用户id，用户类型
         Map<String,Object> res=new HashMap<>();
         Integer type;
         Integer ID;

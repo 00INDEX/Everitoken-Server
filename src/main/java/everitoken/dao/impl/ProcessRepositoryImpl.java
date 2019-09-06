@@ -34,7 +34,24 @@ public class ProcessRepositoryImpl implements ProcessRepository {
 
     @Override
     public int add(ProcessEntity entity) throws Exception {
-        return 0;
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        int uid = -1;
+        try {
+            session.save(entity);
+            uid = entity.getProcessorUid();
+        }catch (Exception e){
+            e.printStackTrace();
+            transaction.rollback();
+            throw e;
+        }
+        transaction.commit();
+        session.close();
+        sessionFactory.close();
+        return uid;
     }
 
     @Override

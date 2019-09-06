@@ -1,7 +1,11 @@
 package everitoken.controller;
 
+import everitoken.EveriTokenOperation.Action;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +26,18 @@ public class UserController {
     private GovernmentRepositoryImpl governmentRepository;
     private RecyclingStationRepositoryImpl recyclingStationRepository;
     private Map<String, Object> res;
-
+    private Action action = new Action();
     @RequestMapping(value = "test")
     @ResponseBody
     public Object test(){
-        return "11111";
+        Configuration cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        UserEntity userEntity = session.get(UserEntity.class, 1);
+        session.close();
+        sessionFactory.close();
+        return userEntity;
     }
     /**
      * 客户注册方法
@@ -63,6 +74,7 @@ public class UserController {
         if (data.containsKey("idnumber")) customerEntity.setCustomerIdnumber(data.get("idnumber").toString());
         if (data.containsKey("phone")) customerEntity.setCustomerPhone(data.get("phone").toString());
         userEntity.setType(0);
+        customerEntity.setCustomerPrivateKey(action.createPrivateKey());
         int uid = -1;
         try {
             uid = customerRepository.add(customerEntity);
@@ -112,15 +124,8 @@ public class UserController {
         if (data.containsKey("email")) userEntity.setEmail(data.get("email").toString());
         if(data.containsKey("producer_CHNCode")) producerEntity.setProducerChnCode(data.get("producer_CHNCode").toString());
         userEntity.setType(1);
-        //if (data.containsKey("producer_private_key")) producerEntity.setProducerPrivateKey(data.get("producer_private_key").toString());
-        /**
-         * todo 完善权限系统之后再编辑此区域
-        if (data.containsKey("authorized"))
-        {
-            Integer value=Integer.parseInt(data.get("authorized").toString());
-            producerEntity.setProducerAuthorized(value.byteValue());
-        }
-         */
+        producerEntity.setProducerPrivateKey(action.createPrivateKey());
+        producerEntity.setProducerAuthorized(false);
         int uid = -1;
         try {
             uid = producterRepository.add(producerEntity);
@@ -169,7 +174,7 @@ public class UserController {
         if (data.containsKey("password")) userEntity.setPassword(data.get("password").toString());
         if (data.containsKey("email")) userEntity.setEmail(data.get("email").toString());
         if(data.containsKey("uid")) userEntity.setUid(Integer.parseInt(data.get("uid").toString()));
-        //if (data.containsKey("government_private_key")) governmentEntity.setGovernmentPrivateKey(data.get("government_private_key").toString());
+        governmentEntity.setGovernmentPrivateKey(action.createPrivateKey());
         if(data.containsKey("government_CHNCode")) governmentEntity.setGovernmentChnCode(data.get("government_CHNCode").toString());
         userEntity.setType(2);
         int uid = -1;
@@ -198,9 +203,9 @@ public class UserController {
     @ResponseBody
     public Object recycling_station_register(HttpSession httpSession, @RequestBody Map<String, Object> data){
         res = new HashMap<>();
-        RecyclingStationEntity recylingStationEntity = new RecyclingStationEntity();
+        RecyclingStationEntity recyclingStationEntity = new RecyclingStationEntity();
         UserEntity userEntity = new UserEntity();
-        recyclingStationRepository=new RecyclingStationRepositoryImpl();
+        recyclingStationRepository = new RecyclingStationRepositoryImpl();
         userRepository = new UserRepositoryImpl();
         if (data.containsKey("username")){
             UserEntity oldUser = userRepository.getByUsername((String)data.get("username"));
@@ -215,18 +220,15 @@ public class UserController {
             res.put("msg", "缺失必要字段");
             return res;
         }
-        if (data.containsKey("rs_name")) recylingStationEntity.setRsName(data.get("rs_name").toString());
+        if (data.containsKey("rs_name")) recyclingStationEntity.setRsName(data.get("rs_name").toString());
         if (data.containsKey("username")) userEntity.setUsername(data.get("username").toString());
         if (data.containsKey("password")) userEntity.setPassword(data.get("password").toString());
         if (data.containsKey("email")) userEntity.setEmail(data.get("email").toString());
-        /**
-         * todo 加入everitoken之后再编辑此区域
-        if (data.containsKey("rs_private_key")) recyclingStationEntity.setRsPrivateKey(data.get("rs_private_key").toString());
-         */
+        recyclingStationEntity.setRsPrivateKey(action.createPrivateKey());
         userEntity.setType(3);
         int uid = -1;
         try {
-            uid =recyclingStationRepository.add(recylingStationEntity);
+            uid =recyclingStationRepository.add(recyclingStationEntity);
             userEntity.setInfoId(uid);
             uid = userRepository.add(userEntity);
         }catch (Exception e){

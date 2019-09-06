@@ -196,16 +196,23 @@
       <artifactId>spring-data-redis</artifactId>
       <version>2.1.10.RELEASE</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/io.everitoken.sdk/chain-sdk -->
     <dependency>
       <groupId>io.everitoken.sdk</groupId>
       <artifactId>chain-sdk</artifactId>
-      <version>1.0.1</version>
+      <version>1.2.0</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
       <version>1.2.59</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.chain/chain-sdk-java -->
+    <dependency>
+      <groupId>com.chain</groupId>
+      <artifactId>chain-sdk-java</artifactId>
+      <version>1.2.1</version>
     </dependency>
 
   </dependencies>
@@ -226,6 +233,10 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>

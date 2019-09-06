@@ -1,5 +1,6 @@
 package everitoken.EveriTokenOperation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -110,12 +111,12 @@ public class Action {
 		
 		List<String> names = Arrays.asList(batteryName);
 		List<String> privateKeyList = Arrays.asList(privateKey);
-		
+		ArrayList<String> privateKeyArrayList = new ArrayList<>(privateKeyList);
 		IssueTokenAction issueTokenAction = IssueTokenAction.of("testDomain", names,
                 Collections.singletonList(Address.of(publicKey)));
 				
-		privateKeyList.add(PRIVATEKEY);		
-        KeyProvider keyProvider = KeyProvider.of(privateKeyList.toArray(new String[]{}));
+		privateKeyArrayList.add(PRIVATEKEY);
+        KeyProvider keyProvider = KeyProvider.of(privateKeyArrayList.toArray(new String[]{}));
         
         
         try {

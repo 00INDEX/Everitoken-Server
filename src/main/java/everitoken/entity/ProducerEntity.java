@@ -8,7 +8,7 @@ public class ProducerEntity {
     private Integer producerUid;
     private String producerName;
     private String producerPrivateKey;
-    private String producerAuthorized;
+    private Boolean producerAuthorized;
     private String producerChnCode;
 
     @Id
@@ -45,11 +45,11 @@ public class ProducerEntity {
 
     @Basic
     @Column(name = "producer_authorized")
-    public String getProducerAuthorized() {
+    public Boolean getProducerAuthorized() {
         return producerAuthorized;
     }
 
-    public void setProducerAuthorized(String producerAuthorized) {
+    public void setProducerAuthorized(Boolean producerAuthorized) {
         this.producerAuthorized = producerAuthorized;
     }
 

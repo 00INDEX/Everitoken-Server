@@ -19,7 +19,8 @@ public class ProducterRepositoryImpl implements ProducterRepository {
 
     @Override
     public ProducerEntity get(Integer id) {
-        ProducerEntity c = null;
+        ProducerEntity c = new ProducerEntity();
+        c.setProducerName("test");
         cfg = new Configuration();
         cfg.configure();
         SessionFactory sessionFactory = cfg.buildSessionFactory();
@@ -30,13 +31,10 @@ public class ProducterRepositoryImpl implements ProducterRepository {
             c = session.get(ProducerEntity.class, id);
         }catch (Exception e){
             e.printStackTrace();
-            Exception exception = new Exception("数据库异常");
-            //throw exception;
-        }finally {
-            transaction.commit();
-            session.close();
-            sessionFactory.close();
         }
+        transaction.commit();
+        session.close();
+        sessionFactory.close();
         return c;
     }
 

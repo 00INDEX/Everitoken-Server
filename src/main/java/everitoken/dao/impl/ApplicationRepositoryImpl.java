@@ -24,7 +24,14 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
 
     @Override
     public List<ApplicationEntity> findAll() {
-        return null;
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from ApplicationEntity application");
+        List applicationEntities = query.getResultList();
+        return applicationEntities;
     }
 
     @Override
@@ -34,7 +41,24 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
 
     @Override
     public int add(ApplicationEntity entity) throws Exception {
-        return 0;
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        int uid = -1;
+        try {
+            session.save(entity);
+            uid = entity.getUid();
+        }catch (Exception e){
+            e.printStackTrace();
+            transaction.rollback();
+            throw e;
+        }
+        transaction.commit();
+        session.close();
+        sessionFactory.close();
+        return uid;
     }
 
     @Override
@@ -63,5 +87,21 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
         query.setParameter("id", id);
         List applicationEntities = query.getResultList();
         return applicationEntities;
+    }
+
+    public ApplicationEntity getById(Integer id) {
+        ApplicationEntity applicationEntity = null;
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        try {
+            applicationEntity = session.get(ApplicationEntity.class, id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        session.close();
+        sessionFactory.close();
+        return applicationEntity;
     }
 }

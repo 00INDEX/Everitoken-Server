@@ -13,5 +13,6 @@
         <property name="batteryMaxVoltage" column="battery_max_voltage"/>
         <property name="batteryAverageTemperature" column="battery_average_temperature"/>
         <property name="batteryChgCycles" column="battery_CHG_cycles"/>
+        <property name="batteryName" column="battery_name"/>
     </class>
 </hibernate-mapping>
