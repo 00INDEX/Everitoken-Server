@@ -291,8 +291,6 @@ public class UserController {
     @ResponseBody
     public Object getUserInfo(HttpSession httpSession){
         res = new HashMap<>();
-
-
         Map<String, Object> info = new HashMap<>();
         if(httpSession.getAttribute("uid") == null || (int)httpSession.getAttribute("uid") <= 0){
             res.put("code", 20003);
@@ -309,6 +307,7 @@ public class UserController {
             info.put("email", userEntity.getEmail());
             info.put("username", userEntity.getUsername());
             info.put("type", userEntity.getType());
+            info.put("uid", uid);
             switch (userEntity.getType()){
                 case 0:
                     CustomerEntity customerEntity = customerRepository.getById((int)userEntity.getInfoId());
