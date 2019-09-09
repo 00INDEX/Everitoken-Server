@@ -1,5 +1,6 @@
 package everitoken.controller;
 
+import com.sun.xml.bind.v2.model.core.ID;
 import everitoken.EveriTokenOperation.Action;
 import everitoken.EveriTokenOperation.Info;
 import everitoken.Operations.Operate;
@@ -295,5 +296,16 @@ public class GetInfoController {
         Integer ID = Integer.parseInt(data.get("id").toString());
         processEntities = processRepository.getProcess(ID);
         return processEntities;
+    }
+    @RequestMapping(value = "/NotAuthorizedApplication",method = RequestMethod.POST)
+    @ResponseBody
+    public Object GetNotAuthorizedApplication(){
+        Map<String,Object> res = new HashMap<>();
+        List entities;
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
+        entities = applicationRepository.RandomGet();
+        res.put("code",0);
+        res.put("info",entities);
+        return res;
     }
 }
