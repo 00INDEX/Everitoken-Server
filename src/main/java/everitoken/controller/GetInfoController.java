@@ -266,5 +266,34 @@ public class GetInfoController {
 
         return res;
     }
-
+    @RequestMapping(value = "/GetPassedAuthorize",method = RequestMethod.POST)
+    @ResponseBody
+    public Object GetPassedAuthorize(@RequestBody Map<String,Object>data){
+        Map<String,Object> res = new HashMap<>();
+        List<ProcessEntity> processEntities;
+        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
+        if (!data.containsKey("id")){
+            res.put("code","10001");
+            res.put("msg","缺少必要字段");
+            return res;
+        }
+        Integer ID = Integer.parseInt(data.get("id").toString());
+        processEntities = processRepository.getPassedProcesses(ID);
+        return processEntities;
+    }
+    @RequestMapping(value = "/GetProducerAuthorizeRecord",method = RequestMethod.POST)
+    @ResponseBody
+    public Object GetProducerAuthorizeRecord(@RequestBody Map<String,Object>data){
+        Map<String,Object> res = new HashMap<>();
+        if (!data.containsKey("id")){
+            res.put("code",10001);
+            res.put("msg","缺少必要字段");
+            return res;
+        }
+        List<ProcessEntity> processEntities;
+        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
+        Integer ID = Integer.parseInt(data.get("id").toString());
+        processEntities = processRepository.getProcess(ID);
+        return processEntities;
+    }
 }
