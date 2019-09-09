@@ -69,6 +69,28 @@ public class ProcessRepositoryImpl implements ProcessRepository {
 
     }
 
+    public List getProcess(Integer id){
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from ProcessEntity process where process.applicant_uid =:id");
+        List result = query.getResultList();
+        return result;
+    }
+
+    public List getPassedProcesses(Integer id){
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from ProcessEntity process where process.applicant_uid =:id and process.vlue = true");
+        List result = query.getResultList();
+        return result;
+    }
+
     public List getByPId(Integer id) {
 
         cfg = new Configuration();
