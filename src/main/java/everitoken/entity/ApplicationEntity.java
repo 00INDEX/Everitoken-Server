@@ -10,6 +10,7 @@ public class ApplicationEntity {
     private Integer applicantUid;
     private Timestamp applicationTime;
     private String applicationDocuments;
+    private int authorized;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,6 +22,7 @@ public class ApplicationEntity {
     public void setUid(Integer uid) {
         this.uid = uid;
     }
+
 
     @Basic
     @Column(name = "applicant_uid")
@@ -50,6 +52,16 @@ public class ApplicationEntity {
 
     public void setApplicationDocuments(String applicationDocuments) {
         this.applicationDocuments = applicationDocuments;
+    }
+
+    @Basic
+    @Column(name = "authorized")
+    public int getAuthorized(){
+        return authorized;
+    }
+
+    public void setAuthorized(int authorized){
+        this.authorized = authorized;
     }
 
     @Override
