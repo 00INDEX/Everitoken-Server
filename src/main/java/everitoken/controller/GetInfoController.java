@@ -225,7 +225,7 @@ public class GetInfoController {
         Integer ID = Integer.parseInt(data.get("id").toString());
         String[] Batteries=null;
         switch (type) {
-            case 1: {
+            case 0: {
                 CustomerEntity customerEntity = GetCustomer(ID);
                 if(customerEntity==null)
                     return IDExist();
@@ -246,7 +246,7 @@ public class GetInfoController {
                 Batteries = info.getTokens(action.toPublicKey(recyclingStationEntity.getRsPrivateKey()));
                 break;
             }
-            case 4: {
+            case 1: {
                 ProducerEntity producerEntity = GetProducer(ID);
                 if(producerEntity==null)
                     return IDExist();
