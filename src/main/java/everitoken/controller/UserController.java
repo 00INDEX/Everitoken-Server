@@ -308,6 +308,7 @@ public class UserController {
             info.put("username", userEntity.getUsername());
             info.put("type", userEntity.getType());
             info.put("uid", uid);
+            info.put("info_id",userEntity.getInfoId());
             switch (userEntity.getType()){
                 case 0:
                     CustomerEntity customerEntity = customerRepository.getById((int)userEntity.getInfoId());
