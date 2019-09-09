@@ -4,10 +4,7 @@ import everitoken.dao.*;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Operate {
     public static Object GetCustomInfo(CustomerEntity customerEntity){
@@ -51,6 +48,7 @@ public class Operate {
         res.put("ApplicantUid",applicationEntity.getApplicantUid());
         res.put("applicationTime",applicationEntity.getApplicationTime());
         res.put("applicationDocuments",applicationEntity.getApplicationDocuments());
+        res.put("Authorized",applicationEntity.getAuthorized());
         return res;
     }
 
@@ -63,13 +61,13 @@ public class Operate {
     public static GovernmentEntity GetGovernment(Integer ID){
         GovernmentEntity customerEntity;
         GovernmentRepositoryImpl customerRepository = new GovernmentRepositoryImpl();
-        customerEntity= customerRepository.getById(ID);
+        customerEntity= customerRepository.get(ID);
         return customerEntity;
     }
     public static ProducerEntity GetProducer(Integer ID){
         ProducerEntity producerEntity;
         ProducterRepositoryImpl producterRepository=new ProducterRepositoryImpl();
-        producerEntity=producterRepository.getById(ID);
+        producerEntity=producterRepository.get(ID);
         return producerEntity;
     }
     public static RecyclingStationEntity GetRS(Integer ID){
@@ -87,13 +85,13 @@ public class Operate {
     public static Object IDExist(){
         Map<String,Object> res=new HashMap<>();
         res.put("code",10005);
-        res.put("msg","ID不存在");
+        res.put("msg","ID不存在数据库");
         return res;
     }
     public static ApplicationEntity GetApplication(Integer ID){
         ApplicationEntity applicationEntity;
         ApplicationRepositoryImpl applicationRepository=new ApplicationRepositoryImpl();
-        applicationEntity = applicationRepository.getById(ID);
+        applicationEntity = applicationRepository.get(ID);
         return applicationEntity;
     }
 
@@ -120,11 +118,11 @@ public class Operate {
         PublicKeyEntity publicKeyEntity;
         UserEntity userEntity;
         PublicKeyRepositoryImpl publicKeyRepository = new PublicKeyRepositoryImpl();
-        UserRepositoryImpl userRepository = new UserRepositoryImpl();
+        UserRepository userRepository = new UserRepositoryImpl();
         int i;
         int j=Past.length;
         for(i=0;i<j;i++){
-            publicKeyEntity=publicKeyRepository.getByPK(Integer.parseInt(Past[i].toString()));
+            publicKeyEntity=publicKeyRepository.getByPK(Past[i]);
             PastID=publicKeyEntity.getUserUid();
             userEntity = userRepository.get(PastID);
             PastOwner.add(userEntity.getUsername());
