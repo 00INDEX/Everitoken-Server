@@ -1,6 +1,7 @@
 package everitoken.controller;
 
 
+import com.alibaba.fastjson.support.odps.udf.CodecCheck;
 import everitoken.dao.ApplicationRepository;
 import everitoken.dao.ProcessRepository;
 import everitoken.dao.impl.ApplicationRepositoryImpl;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import everitoken.Operations.Operate.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -61,6 +63,8 @@ public class AuthorizeController {
         applicationEntity.setApplicantUid(Integer.parseInt(data.get("ApplicantID").toString()));
         applicationEntity.setApplicationDocuments(data.get("ApplicationDocument").toString());
         applicationEntity.setApplicationTime(time);
+        applicationRepository.add(applicationEntity);
+
         res.put("code",0);
         res.put("msg","success");
         return res;
@@ -82,6 +86,7 @@ public class AuthorizeController {
         ProducerEntity producerEntity = GetProducer(P_ID);
         GovernmentEntity governmentEntity = GetGovernment(G_ID);
         ApplicationEntity applicationEntity = GetApplication(A_ID);
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
         ProcessEntity processEntity =new ProcessEntity();
         ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
         ProducterRepositoryImpl producterRepository = new ProducterRepositoryImpl();
@@ -102,6 +107,8 @@ public class AuthorizeController {
         processRepository.add(processEntity);
         producerEntity.setProducerAuthorized((Boolean)data.get("AuthorizeValue"));
         producterRepository.update(producerEntity);
+        applicationEntity.setAuthorized(Integer.parseInt(data.get("AuthorizeValue").toString()));
+        applicationRepository.update(applicationEntity);
         res.put("code",0);
         res.put("msg","success");
         return res;
