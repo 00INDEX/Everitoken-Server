@@ -11,7 +11,7 @@ public class ProcessEntity {
     private Integer processorUid;
     private Timestamp processTime;
     private String processReason;
-
+    private boolean value;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "uid")
@@ -51,6 +51,16 @@ public class ProcessEntity {
 
     public void setProcessTime(Timestamp processTime) {
         this.processTime = processTime;
+    }
+
+    @Basic
+    @Column(name = "value")
+    public boolean getValue() {
+        return value;
+    }
+
+    public void setValue(boolean value) {
+        this.value=value;
     }
 
     @Basic
