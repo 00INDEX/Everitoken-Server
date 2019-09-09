@@ -61,9 +61,8 @@ public class AuthorizeController {
         applicationEntity.setApplicantUid(Integer.parseInt(data.get("ApplicantID").toString()));
         applicationEntity.setApplicationDocuments(data.get("ApplicationDocument").toString());
         applicationEntity.setApplicationTime(time);
-        int id = applicationRepository.add(applicationEntity);
         res.put("code",0);
-        res.put("ID",id);
+        res.put("msg","success");
         return res;
     }
     @RequestMapping(value = "/SetAuthorize",method = RequestMethod.POST)
@@ -99,6 +98,7 @@ public class AuthorizeController {
         processEntity.setProcessReason(data.get("AuthorizeReason").toString());
         processEntity.setProcessTime(Timestamp.valueOf(data.get("AuthorizeTime").toString()));
         processEntity.setProcessorUid(governmentEntity.getGovernmentUid());
+        processEntity.setValue((Boolean)data.get("AuthorizeValue"));
         processRepository.add(processEntity);
         producerEntity.setProducerAuthorized((Boolean)data.get("AuthorizeValue"));
         producterRepository.update(producerEntity);
