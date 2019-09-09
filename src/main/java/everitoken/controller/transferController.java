@@ -4,10 +4,7 @@ import everitoken.EveriTokenOperation.Action;
 import everitoken.Utils.Func;
 import everitoken.dao.CustomerRepository;
 import everitoken.dao.impl.*;
-import everitoken.entity.CustomerEntity;
-import everitoken.entity.GovernmentEntity;
-import everitoken.entity.ProducerEntity;
-import everitoken.entity.UserEntity;
+import everitoken.entity.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,6 +87,7 @@ public class transferController{
                         return res;
                     }
                     String privateKey;
+                    String privateKey2;
                     String publicKey;
                     CustomerRepositoryImpl customerRepository = new CustomerRepositoryImpl();
                     ProducterRepositoryImpl producterRepository = new ProducterRepositoryImpl();
@@ -104,6 +102,48 @@ public class transferController{
                         return res;
                     }
                     Object StarterEntity, CheckerEntity;
+                    switch (checker.getType()){
+                        case 0:
+                            CheckerEntity = customerRepository.getById(checker.getInfoId());
+                            if (CheckerEntity == null){
+                                res.put("code", 10005);
+                                res.put("msg", "用户不存在");
+                                return res;
+                            }
+                            privateKey2 = ((CustomerEntity)CheckerEntity).getCustomerPrivateKey();
+                            break;
+                        case 1:
+                            CheckerEntity = producterRepository.getById(checker.getInfoId());
+                            if (CheckerEntity == null){
+                                res.put("code", 10005);
+                                res.put("msg", "用户不存在");
+                                return res;
+                            }
+                            privateKey2 = ((ProducerEntity)CheckerEntity).getProducerPrivateKey();
+                            break;
+                        case 2:
+                            CheckerEntity = governmentRepository.getById(checker.getInfoId());
+                            if (CheckerEntity == null){
+                                res.put("code", 10005);
+                                res.put("msg", "用户不存在");
+                                return res;
+                            }
+                            privateKey2 = ((GovernmentEntity)CheckerEntity).getGovernmentPrivateKey();
+                            break;;
+                        case 3:
+                            CheckerEntity = recyclingStationRepository.getById(checker.getInfoId());
+                            if (CheckerEntity == null){
+                                res.put("code", 10005);
+                                res.put("msg", "用户不存在");
+                                return res;
+                            }
+                            privateKey2 = ((RecyclingStationEntity)CheckerEntity).getRsPrivateKey();
+                            break;;
+                        default:
+                            res.put("code",10004);
+                            res.put("msg","用户类型不对");
+                            return res;
+                    }
                     switch (starter.getType()){
                         case 0:
                             StarterEntity = customerRepository.getById(starter.getInfoId());
@@ -133,14 +173,23 @@ public class transferController{
                             privateKey = ((GovernmentEntity)StarterEntity).getGovernmentPrivateKey();
                             break;;
                         case 3:
-
-
+                            StarterEntity = recyclingStationRepository.getById(starter.getInfoId());
+                            if (StarterEntity == null){
+                                res.put("code", 10005);
+                                res.put("msg", "用户不存在");
+                                return res;
+                            }
+                            privateKey = ((RecyclingStationEntity)StarterEntity).getRsPrivateKey();
+                            break;
+                            default:
+                                res.put("code",10004);
+                                res.put("msg","用户类型不对");
+                                return res;
                     }
 
-                    CheckerEntity = customerRepository.get(checker.getInfoId());
 
 
-                    publicKey =action.toPublicKey(CheckerEntity.getCustomerPrivateKey());
+                    publicKey =action.toPublicKey(privateKey2);
                     if(action.transferBattery(Battery_name,privateKey,publicKey))
                     {
                         jedis.set(Stater_ID.toString() + "_confirm", "1");
