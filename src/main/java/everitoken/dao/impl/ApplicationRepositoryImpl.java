@@ -2,6 +2,7 @@ package everitoken.dao.impl;
 
 import everitoken.dao.ApplicationRepository;
 import everitoken.entity.ApplicationEntity;
+import everitoken.entity.ProcessEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,6 +35,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
         return applicationEntities;
     }
 
+
+
     @Override
     public void persist(ApplicationEntity entity) {
 
@@ -63,7 +66,23 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
 
     @Override
     public void update(ApplicationEntity entity) {
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
 
+        try {
+            session.saveOrUpdate(entity);
+        }catch (Exception e){
+            e.printStackTrace();
+            Exception exception = new Exception("数据库异常");
+            //throw exception;
+        }finally {
+            transaction.commit();
+            session.close();
+            sessionFactory.close();
+        }
     }
 
     @Override
@@ -74,6 +93,16 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     @Override
     public void flush() {
 
+    }
+    public List RandomGet(){
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("select top 10 from ApplicationEntity application order by newid()");
+        List applicationEntities = query.getResultList();
+        return applicationEntities;
     }
 
     public List getByAId(Integer id) {
