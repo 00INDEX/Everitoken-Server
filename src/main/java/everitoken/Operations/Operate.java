@@ -28,6 +28,7 @@ public class Operate {
         Map<String,Object> res=new HashMap<>();
         res.put("name",customerEntity.getProducerName());
         res.put("CHNCode",customerEntity.getProducerChnCode());
+        res.put("producer_authorized",customerEntity.getProducerAuthorized());
         return res;
     }
 
@@ -109,6 +110,7 @@ public class Operate {
         res.put("processorUid",processEntity.getProcessorUid());
         res.put("processTime",processEntity.getProcessTime());
         res.put("processReason",processEntity.getProcessReason());
+        res.put("value",processEntity.getValue());
         return res;
     }
 
