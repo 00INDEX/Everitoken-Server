@@ -10,5 +10,6 @@
         <property name="processorUid" column="processor_uid"/>
         <property name="processTime" column="process_time"/>
         <property name="processReason" column="process_reason"/>
+        <property name="value" column="value" />
     </class>
 </hibernate-mapping>

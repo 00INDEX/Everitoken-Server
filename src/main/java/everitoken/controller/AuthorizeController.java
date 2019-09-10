@@ -1,9 +1,6 @@
 package everitoken.controller;
 
 
-import com.alibaba.fastjson.support.odps.udf.CodecCheck;
-import everitoken.dao.ApplicationRepository;
-import everitoken.dao.ProcessRepository;
 import everitoken.dao.impl.ApplicationRepositoryImpl;
 import everitoken.dao.impl.ProcessRepositoryImpl;
 import everitoken.dao.impl.ProducterRepositoryImpl;
@@ -14,11 +11,6 @@ import everitoken.entity.ProducerEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import everitoken.Operations.Operate.*;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -103,7 +95,7 @@ public class AuthorizeController {
         processEntity.setProcessReason(data.get("AuthorizeReason").toString());
         processEntity.setProcessTime(Timestamp.valueOf(data.get("AuthorizeTime").toString()));
         processEntity.setProcessorUid(governmentEntity.getGovernmentUid());
-        processEntity.setValue((Boolean)data.get("AuthorizeValue"));
+        processEntity.setValue((Integer) data.get("AuthorizeValue"));
         processRepository.add(processEntity);
         producerEntity.setProducerAuthorized((Boolean)data.get("AuthorizeValue"));
         producterRepository.update(producerEntity);

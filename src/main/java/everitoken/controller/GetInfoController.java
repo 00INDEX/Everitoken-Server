@@ -116,7 +116,7 @@ public class GetInfoController {
             return res;
         }
         ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
-        List<ApplicationEntity> applicationEntities = applicationRepository.getByAId(Integer.parseInt(data.get("id").toString()));
+        List applicationEntities = applicationRepository.getByAId(Integer.parseInt(data.get("id").toString()));
         if(applicationEntities==null){
             res.put("code",10005);
             res.put("msg","ID不存在数据库");
@@ -125,7 +125,7 @@ public class GetInfoController {
         int i=applicationEntities.size();
         int j;
         for(j=0;j<i;j++){
-            res.put(""+j+"",Operate.GetApplicationInfo(applicationEntities.get(j)));
+            res.put(""+j+"",Operate.GetApplicationInfo((ApplicationEntity) applicationEntities.get(j)));
         }
         return res;
     }

@@ -1,5 +1,6 @@
 package everitoken.controller;
 
+
 import everitoken.EveriTokenOperation.Action;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
@@ -315,6 +316,7 @@ public class UserController {
                     info.put("name", customerEntity.getCustomerName());
                     info.put("phone", customerEntity.getCustomerPhone());
                     info.put("sex", customerEntity.getCustomerSex());
+                    info.put("id_number", customerEntity.getCustomerIdnumber());
                     break;
                 case 1:
                     ProducerEntity producerEntity = producterRepository.getById(1);
@@ -425,8 +427,9 @@ public class UserController {
             res.put("msg", "缺失必要字段");
             return res;
         }
-        Map info = (Map)((Map)getUserInfo(httpSession)).get("data");
-        userEntity = userRepository.getByUsername((String) data.get(info.get("username")));
+
+
+        userEntity = userRepository.getById((Integer) httpSession.getAttribute("uid"));
         userEntity.setEmail((String)data.get("new_email"));
         userRepository.update(userEntity);
         res.put("code", 0);
@@ -451,8 +454,7 @@ public class UserController {
             res.put("msg", "缺失必要字段");
             return res;
         }
-        Map info = (Map)((Map)getUserInfo(httpSession)).get("data");
-        userEntity = userRepository.getByUsername((String) data.get(info.get("username")));
+        userEntity = userRepository.getById((Integer)httpSession.getAttribute("uid"));
         customerEntity = customerRepository.getById(userEntity.getInfoId());
         customerEntity.setCustomerPhone((String)data.get("new_phone"));
         customerRepository.update(customerEntity);

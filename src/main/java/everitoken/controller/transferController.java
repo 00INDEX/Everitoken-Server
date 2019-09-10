@@ -2,7 +2,6 @@ package everitoken.controller;
 
 import everitoken.EveriTokenOperation.Action;
 import everitoken.Utils.Func;
-import everitoken.dao.CustomerRepository;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
 import org.springframework.stereotype.Controller;
@@ -129,7 +128,7 @@ public class transferController{
                                 return res;
                             }
                             privateKey2 = ((GovernmentEntity)CheckerEntity).getGovernmentPrivateKey();
-                            break;;
+                            break;
                         case 3:
                             CheckerEntity = recyclingStationRepository.getById(checker.getInfoId());
                             if (CheckerEntity == null){
@@ -138,7 +137,7 @@ public class transferController{
                                 return res;
                             }
                             privateKey2 = ((RecyclingStationEntity)CheckerEntity).getRsPrivateKey();
-                            break;;
+                            break;
                         default:
                             res.put("code",10004);
                             res.put("msg","用户类型不对");
@@ -171,7 +170,7 @@ public class transferController{
                                 return res;
                             }
                             privateKey = ((GovernmentEntity)StarterEntity).getGovernmentPrivateKey();
-                            break;;
+                            break;
                         case 3:
                             StarterEntity = recyclingStationRepository.getById(starter.getInfoId());
                             if (StarterEntity == null){

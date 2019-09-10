@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ApplicationRepositoryImpl implements ApplicationRepository {
@@ -100,8 +101,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
         SessionFactory sessionFactory = cfg.buildSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("select top 10 from ApplicationEntity application order by newid()");
+        Query query = session.createQuery("from ApplicationEntity application");
         List applicationEntities = query.getResultList();
+        Collections.shuffle(applicationEntities);
+        applicationEntities = applicationEntities.subList(0, applicationEntities.size() < 10 ? applicationEntities.size() : 10);
         return applicationEntities;
     }
 

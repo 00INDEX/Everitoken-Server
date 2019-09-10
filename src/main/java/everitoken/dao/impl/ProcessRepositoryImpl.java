@@ -75,7 +75,7 @@ public class ProcessRepositoryImpl implements ProcessRepository {
         SessionFactory sessionFactory = cfg.buildSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from ProcessEntity process where process.applicant_uid =:id");
+        Query query = session.createQuery("from ProcessEntity process where process.applicantUid =:id");
         List result = query.getResultList();
         return result;
     }
@@ -86,7 +86,9 @@ public class ProcessRepositoryImpl implements ProcessRepository {
         SessionFactory sessionFactory = cfg.buildSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from ProcessEntity process where process.applicant_uid =:id and process.vlue = true");
+        Query query = session.createQuery("from ProcessEntity process where process.applicantUid = " + id + " and process.value = 1");
+
+
         List result = query.getResultList();
         return result;
     }

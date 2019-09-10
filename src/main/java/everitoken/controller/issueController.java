@@ -1,8 +1,7 @@
 package everitoken.controller;
 
+
 import everitoken.EveriTokenOperation.Action;
-import everitoken.Operations.Operate;
-import everitoken.dao.BatteryRepository;
 import everitoken.dao.impl.BatteryRepositoryImpl;
 import everitoken.entity.BatteryEntity;
 import everitoken.entity.ProducerEntity;
@@ -60,7 +59,9 @@ public class issueController {
             res.put("msg","该用户未被授权");
             return res;
         }
-        batteryName = producerEntity.getProducerUid() + batteryName+ UUID.randomUUID();
+        batteryName = producerEntity.getProducerUid() + batteryName+ UUID.randomUUID().toString();
+        batteryName.replaceAll("-", "");
+        batteryName = batteryName.substring(0,20);
         int count=0;
         while(!action.issueBattery(action.toPublicKey(producerEntity.getProducerPrivateKey()),
                 producerEntity.getProducerPrivateKey(),batteryName)&&count<10){

@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "process", schema = "everitoken", catalog = "")
+@Table(name = "process", schema = "everitoken")
 public class ProcessEntity {
     private Integer uid;
     private Integer applicantUid;
     private Integer processorUid;
     private Timestamp processTime;
     private String processReason;
-    private boolean value;
+    private Integer value;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "uid")
@@ -55,11 +55,11 @@ public class ProcessEntity {
 
     @Basic
     @Column(name = "value")
-    public boolean getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(boolean value) {
+    public void setValue(Integer value) {
         this.value=value;
     }
 

@@ -124,7 +124,7 @@ public class Operate {
         int i;
         int j=Past.length;
         for(i=0;i<j;i++){
-            publicKeyEntity=publicKeyRepository.getByPK(Past[i]);
+            publicKeyEntity=publicKeyRepository.getByPK(Integer.parseInt(Past[i]));
             PastID=publicKeyEntity.getUserUid();
             userEntity = userRepository.get(PastID);
             PastOwner.add(userEntity.getUsername());
