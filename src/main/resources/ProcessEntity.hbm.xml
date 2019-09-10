@@ -11,5 +11,6 @@
         <property name="processTime" column="process_time"/>
         <property name="processReason" column="process_reason"/>
         <property name="value" column="value" />
+        <property name="applicationUid" column="application_uid" />
     </class>
 </hibernate-mapping>

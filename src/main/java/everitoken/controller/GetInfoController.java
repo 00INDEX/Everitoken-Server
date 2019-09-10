@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +117,9 @@ public class GetInfoController {
             return res;
         }
         ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
-        List applicationEntities = applicationRepository.getByAId(Integer.parseInt(data.get("id").toString()));
+        ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
+        List<ApplicationEntity> applicationEntities = applicationRepository.getByAId(Integer.parseInt(data.get("id").toString()));
+        List<ProcessEntity> processEntities= new ArrayList<>();
         if(applicationEntities==null){
             res.put("code",10005);
             res.put("msg","ID不存在数据库");
@@ -125,7 +128,11 @@ public class GetInfoController {
         int i=applicationEntities.size();
         int j;
         for(j=0;j<i;j++){
-            res.put(""+j+"",Operate.GetApplicationInfo((ApplicationEntity) applicationEntities.get(j)));
+            res.put(""+j+"",Operate.GetApplicationInfo(applicationEntities.get(j)));
+            if (applicationEntities.get(j).getAuthorized()==0){
+                processEntities.add(processRepository.getByAId(applicationEntities.get(j).getUid()));
+                res.put(""+j+"授权情况",processEntities);
+            }
         }
         return res;
     }

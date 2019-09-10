@@ -12,6 +12,7 @@ public class ProcessEntity {
     private Timestamp processTime;
     private String processReason;
     private Integer value;
+    private Integer applicationUid;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "uid")
@@ -21,6 +22,16 @@ public class ProcessEntity {
 
     public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    @Basic
+    @Column(name = "application_uid")
+    public Integer getApplicationUid() {
+        return applicationUid;
+    }
+
+    public void setApplicationUid(Integer applicationUid) {
+        this.applicationUid = applicationUid;
     }
 
     @Basic

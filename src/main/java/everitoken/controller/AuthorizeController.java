@@ -66,7 +66,7 @@ public class AuthorizeController {
     public Object SetAuthorize(@RequestBody Map<String,Object>data) throws Exception {//function:政府授权;need:政府ID,政府授权时间,授权值，授权理由，申请者ID,申请的UID
         Map<String,Object> res = new HashMap<>();
         if(!data.containsKey("ApplicantID")&&!data.containsKey("GovernmentID")&&!data.containsKey("AuthorizeTime")&&!data.containsKey("AuthorizeValue")
-        &&!data.containsKey("AuthorizeReason")&&!data.containsKey("ApplicationUid"))
+                &&!data.containsKey("AuthorizeReason")&&!data.containsKey("ApplicationUid"))
         {
             res.put("code",10001);
             res.put("msg","缺少必要字段");
@@ -96,6 +96,7 @@ public class AuthorizeController {
         processEntity.setProcessTime(Timestamp.valueOf(data.get("AuthorizeTime").toString()));
         processEntity.setProcessorUid(governmentEntity.getGovernmentUid());
         processEntity.setValue((Integer) data.get("AuthorizeValue"));
+        processEntity.setApplicationUid(Integer.parseInt(data.get("ApplicationUid").toString()));
         processRepository.add(processEntity);
         producerEntity.setProducerAuthorized((Boolean)data.get("AuthorizeValue"));
         producterRepository.update(producerEntity);
@@ -107,3 +108,5 @@ public class AuthorizeController {
     }
 
 }
+
+

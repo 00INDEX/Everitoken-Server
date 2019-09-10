@@ -105,4 +105,20 @@ public class ProcessRepositoryImpl implements ProcessRepository {
         List applicationEntities = query.getResultList();
         return applicationEntities;
     }
+
+    public ProcessEntity getByAId(Integer id){
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from ProcessEntity process where process.applicationUid = :id");
+        query.setParameter("id", id);
+        List<ProcessEntity> processEntities = query.list();
+        if (processEntities.size() > 0) return processEntities.get(0);
+        else return null;
+
+    }
+
+
 }
