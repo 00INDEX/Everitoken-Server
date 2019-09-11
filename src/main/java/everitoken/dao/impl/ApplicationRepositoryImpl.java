@@ -101,7 +101,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
         SessionFactory sessionFactory = cfg.buildSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from ApplicationEntity application");
+        Query query = session.createQuery("from ApplicationEntity application where application.authorized = 0");
         List applicationEntities = query.getResultList();
         Collections.shuffle(applicationEntities);
         applicationEntities = applicationEntities.subList(0, applicationEntities.size() < 10 ? applicationEntities.size() : 10);
