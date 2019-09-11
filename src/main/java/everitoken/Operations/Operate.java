@@ -56,31 +56,31 @@ public class Operate {
     public static CustomerEntity GetCustomer(Integer ID){
         CustomerEntity customerEntity;
         CustomerRepositoryImpl customerRepository = new CustomerRepositoryImpl();
-        customerEntity= customerRepository.get(ID);
+        customerEntity= customerRepository.getById(ID);
         return customerEntity;
     }
     public static GovernmentEntity GetGovernment(Integer ID){
         GovernmentEntity customerEntity;
         GovernmentRepositoryImpl customerRepository = new GovernmentRepositoryImpl();
-        customerEntity= customerRepository.get(ID);
+        customerEntity= customerRepository.getById(ID);
         return customerEntity;
     }
     public static ProducerEntity GetProducer(Integer ID){
         ProducerEntity producerEntity;
         ProducterRepositoryImpl producterRepository=new ProducterRepositoryImpl();
-        producerEntity=producterRepository.get(ID);
+        producerEntity=producterRepository.getById(ID);
         return producerEntity;
     }
     public static RecyclingStationEntity GetRS(Integer ID){
         RecyclingStationEntity producerEntity;
         RecyclingStationRepositoryImpl producterRepository=new RecyclingStationRepositoryImpl();
-        producerEntity=producterRepository.get(ID);
+        producerEntity=producterRepository.getById(ID);
         return producerEntity;
     }
-    public static BatteryEntity GetBattery(Integer ID){
+    public static BatteryEntity GetBattery(String ID){
         BatteryEntity batteryEntity;
         BatteryRepositoryImpl batteryRepository = new BatteryRepositoryImpl();
-        batteryEntity = batteryRepository.get(ID);
+        batteryEntity = batteryRepository.getById(ID);
         return batteryEntity;
     }
     public static Object IDExist(){
@@ -92,7 +92,7 @@ public class Operate {
     public static ApplicationEntity GetApplication(Integer ID){
         ApplicationEntity applicationEntity;
         ApplicationRepositoryImpl applicationRepository=new ApplicationRepositoryImpl();
-        applicationEntity = applicationRepository.get(ID);
+        applicationEntity = applicationRepository.getById(ID);
         return applicationEntity;
     }
 
