@@ -207,7 +207,7 @@ public class GetInfoController {
             res.put("msg","没有电池ID");
             return res;
         }
-        Integer ID=Integer.parseInt(data.get("id").toString());
+        String ID=data.get("id").toString();
         BatteryEntity batteryEntity = GetBattery(ID);
         if(batteryEntity==null)
             return IDExist();

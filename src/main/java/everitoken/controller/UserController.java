@@ -126,7 +126,7 @@ public class UserController {
         if(data.containsKey("producer_CHNCode")) producerEntity.setProducerChnCode(data.get("producer_CHNCode").toString());
         userEntity.setType(1);
         producerEntity.setProducerPrivateKey(action.createPrivateKey());
-        producerEntity.setProducerAuthorized(false);
+        producerEntity.setProducerAuthorized(0);
         int uid = -1;
         try {
             uid = producterRepository.add(producerEntity);

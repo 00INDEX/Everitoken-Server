@@ -1,4 +1,4 @@
-package everitoken.controller;
+/*package everitoken.controller;
 
 import everitoken.EveriTokenOperation.Action;
 import everitoken.Utils.Func;
@@ -260,3 +260,4 @@ public class transferController{
 
 }
 
+*/

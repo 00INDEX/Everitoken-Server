@@ -91,6 +91,11 @@ public class AuthorizeController {
             res.put("msg","字段信息有误，数据库数据冲突");
             return res;
         }
+        if(applicationEntity.getAuthorized()==1){
+            res.put("code",10007);
+            res.put("msg","该用户已被授权");
+            return res;
+        }
         processEntity.setApplicantUid(applicationEntity.getApplicantUid());
         processEntity.setProcessReason(data.get("AuthorizeReason").toString());
         processEntity.setProcessTime(Timestamp.valueOf(data.get("AuthorizeTime").toString()));
@@ -98,7 +103,7 @@ public class AuthorizeController {
         processEntity.setValue((Integer) data.get("AuthorizeValue"));
         processEntity.setApplicationUid(Integer.parseInt(data.get("ApplicationUid").toString()));
         processRepository.add(processEntity);
-        producerEntity.setProducerAuthorized((Boolean)data.get("AuthorizeValue"));
+        producerEntity.setProducerAuthorized((Integer)data.get("AuthorizeValue"));
         producterRepository.update(producerEntity);
         applicationEntity.setAuthorized(Integer.parseInt(data.get("AuthorizeValue").toString()));
         applicationRepository.update(applicationEntity);
