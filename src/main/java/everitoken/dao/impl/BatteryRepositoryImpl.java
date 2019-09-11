@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -73,5 +74,19 @@ public class BatteryRepositoryImpl implements BatteryRepository {
     @Override
     public void flush() {
 
+    }
+
+    public BatteryEntity getById(String Name) {
+        cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory = cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from BatteryEntity battery where battery.batteryName = :name");
+        query.setParameter("name", Name);
+        List applicationEntities = query.getResultList();
+        if (applicationEntities.size()>0)
+            return (BatteryEntity) applicationEntities.get(0);
+        return null;
     }
 }
