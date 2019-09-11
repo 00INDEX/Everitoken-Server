@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "process", schema = "everitoken")
+@Table(name = "process", schema = "everitoken", catalog = "")
 public class ProcessEntity {
     private Integer uid;
     private Integer applicantUid;
@@ -13,11 +13,16 @@ public class ProcessEntity {
     private String processReason;
     private Integer value;
     private Integer applicationUid;
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "uid")
     public Integer getUid() {
         return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public void setUid(Integer uid) {
@@ -26,11 +31,9 @@ public class ProcessEntity {
 
     @Basic
     @Column(name = "application_uid")
-    public Integer getApplicationUid() {
-        return applicationUid;
-    }
+    public  Integer getApplicationUid(){return this.applicationUid;}
 
-    public void setApplicationUid(Integer applicationUid) {
+    public void setApplicationUid(Integer applicationUid){
         this.applicationUid = applicationUid;
     }
 

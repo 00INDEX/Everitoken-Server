@@ -10,13 +10,17 @@ public class ApplicationEntity {
     private Integer applicantUid;
     private Timestamp applicationTime;
     private String applicationDocuments;
-    private int authorized;
+    private Integer authorized;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "uid")
     public Integer getUid() {
         return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public void setUid(Integer uid) {
@@ -56,11 +60,11 @@ public class ApplicationEntity {
 
     @Basic
     @Column(name = "authorized")
-    public int getAuthorized(){
+    public Integer getAuthorized(){
         return authorized;
     }
 
-    public void setAuthorized(int authorized){
+    public void setAuthorized(Integer authorized){
         this.authorized = authorized;
     }
 

@@ -15,6 +15,10 @@ public class PublicKeyEntity {
         return uid;
     }
 
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
     public void setUid(Integer uid) {
         this.uid = uid;
     }

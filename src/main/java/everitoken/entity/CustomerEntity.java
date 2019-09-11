@@ -19,11 +19,13 @@ public class CustomerEntity {
         return customerUid;
     }
 
-    public void setCustomerUid(Integer customerUid) {
+    public void setCustomerUid(int customerUid) {
         this.customerUid = customerUid;
     }
 
-
+    public void setCustomerUid(Integer customerUid) {
+        this.customerUid = customerUid;
+    }
 
     @Basic
     @Column(name = "customer_sex")
