@@ -1,10 +1,6 @@
 package everitoken.EveriTokenOperation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import io.everitoken.sdk.java.*;
+import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.dto.ActionData;
 import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.dto.TokenDomain;
@@ -13,6 +9,10 @@ import io.everitoken.sdk.java.param.ActionQueryParams;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.PublicKeysParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Info {
     private NetParams netParams = null;
@@ -30,7 +30,7 @@ public class Info {
         nameList.forEach(tokenName->{
             TokenDetailData res = null;
             try {
-                res = api.getToken("testDomain", tokenName);
+                res = api.getToken("BatteryTokenTest", tokenName);
                 res.getOwner().forEach(publicKey -> data.add(new BatteryDetail(tokenName, publicKey.toString())));
             } catch (ApiResponseException e) {
                 e.printStackTrace();
@@ -50,7 +50,7 @@ public class Info {
     public BatteryDetail[] getAllBattery() {
         List<BatteryDetail> data = new ArrayList<BatteryDetail>();
         try {
-            List<TokenDetailData> tokens = api.getDomainTokens("testDomain", 10, 0);
+            List<TokenDetailData> tokens = api.getDomainTokens("BatteryTokenTest", 10, 0);
             tokens.forEach(token->{
                         token.getOwner().forEach(publicKey->{
                             data.add(new BatteryDetail(token.getName(), publicKey.toString()));
@@ -82,7 +82,7 @@ public class Info {
     public String[] getSource(String tokenName) {
         List<String> Owners = new ArrayList<String>();
         try {
-            List<ActionData> actionData = api.getActions(new ActionQueryParams("testDomain", tokenName));
+            List<ActionData> actionData = api.getActions(new ActionQueryParams("BatteryTokenTest", tokenName));
             actionData.forEach(data->{
                 Owners.add(data.getData().getJSONArray("to").getString(0));
             });
