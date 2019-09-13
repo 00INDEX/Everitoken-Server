@@ -11,5 +11,6 @@
         <property name="applicantUid" column="applicant_uid"/>
         <property name="applicationTime" column="application_time"/>
         <property name="applicationDocuments" column="application_documents"/>
+        <property name="authorized" column="authorized"/>
     </class>
 </hibernate-mapping>

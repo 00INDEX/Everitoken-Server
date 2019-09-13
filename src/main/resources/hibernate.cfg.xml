@@ -33,5 +33,7 @@
     <mapping resource="ProcessEntity.hbm.xml"/>
     <mapping class="everitoken.entity.PublicKeyEntity"/>
     <mapping resource="PublicKeyEntity.hbm.xml"/>
+    <mapping resource="PostEntity.hbm.xml"/>
+    <mapping class="everitoken.entity.PostEntity"/>
   </session-factory>
 </hibernate-configuration>
