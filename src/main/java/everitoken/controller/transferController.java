@@ -1,4 +1,4 @@
-/*package everitoken.controller;
+package everitoken.controller;
 
 import everitoken.EveriTokenOperation.Action;
 import everitoken.Utils.Func;
@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import everitoken.Utils.Func.*;
 
 @Controller
 @RequestMapping(value = "/transfer")
@@ -23,7 +24,7 @@ public class transferController{
    private Action action = new Action();
     @RequestMapping(value = "/sell/begin",method = RequestMethod.POST)
     @ResponseBody
-    public Object Customer_transfer_Beginner(HttpSession httpSession, @RequestBody Map<String, Object> data){//发起者的ID，识别码
+    public Object Customer_transfer_Beginner(HttpSession httpSession, @RequestBody Map<String, Object> data){//发起者的ID，识别码.电池名称
         Integer ID ;
         Map<String,Object> res = new HashMap<>();
         String ID_code;
@@ -80,7 +81,7 @@ public class transferController{
             {
                 if(true)
                 {
-                    if(jedis.get(Stater_ID + "_ID_code").equals(data.get("ID_code").toString())){
+                    if(!jedis.get(Stater_ID + "_ID_code").equals(data.get("ID_code").toString())){
                         res.put("code",10003);
                         res.put("msg","识别码不匹配");
                         return res;
@@ -194,12 +195,18 @@ public class transferController{
                         jedis.set(Stater_ID.toString() + "_confirm", "1");
                         res.put("code",0);
                         res.put("msg","交易成功");
+                        BatteryEntity batteryEntity;
+                        BatteryRepositoryImpl batteryRepository = new BatteryRepositoryImpl();
+                        batteryEntity = batteryRepository.getById(Battery_name);
+                        batteryEntity.setBatteryChgCycles(batteryEntity.getBatteryChgCycles()+1);
+                        batteryRepository.update(batteryEntity);
                         return res;
                     }
                     else
                     {
                         res.put("code",11001);
                         res.put("msg","交易失败");
+                        return res;
                     }
                 }
             }
@@ -251,13 +258,17 @@ public class transferController{
             return res;
         }
         else{
+            if (Integer.parseInt(jedis.get(ID+"_confirm"))==1){
+                res.put("code",10007);
+                res.put("msg","订单不存在");
+                return res;
+            }
             String ID_code=data.get("ID_code").toString();
             res.put("BatteryName", jedis.get(ID + "_BatteryName"));
-            res.put("Owner", jedis.get(ID + "_ID_code"));
+            res.put("ID_code", jedis.get(ID + "_ID_code"));
         }
         return res;
     }
 
 }
 
-*/
