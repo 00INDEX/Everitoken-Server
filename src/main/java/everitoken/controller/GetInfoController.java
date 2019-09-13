@@ -1,5 +1,6 @@
 package everitoken.controller;
 
+import com.alibaba.fastjson.support.odps.udf.CodecCheck;
 import com.sun.xml.bind.v2.model.core.ID;
 import everitoken.EveriTokenOperation.Action;
 import everitoken.EveriTokenOperation.Info;
@@ -299,20 +300,39 @@ public class GetInfoController {
             return res;
         }
         List<ProcessEntity> processEntities;
+        List<ApplicationEntity> applicationEntities=new ArrayList<>();
+        List<ProducerEntity> producerEntities = new ArrayList<>();
         ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
+        ProducterRepositoryImpl producterRepository = new ProducterRepositoryImpl();
         Integer ID = Integer.parseInt(data.get("id").toString());
         processEntities = processRepository.getProcess(ID);
-        return processEntities;
+        int i;
+        for (i=0;i<processEntities.size();i++){
+            applicationEntities.add(applicationRepository.getById(processEntities.get(i).getApplicationUid()));
+            producerEntities.add(producterRepository.getById(processEntities.get(i).getApplicantUid()));
+        }
+        res.put("申请文件",applicationEntities);
+        res.put("申请公司",producerEntities);
+        res.put("授权文件",processEntities);
+        return res;
     }
     @RequestMapping(value = "/NotAuthorizedApplication",method = RequestMethod.POST)
     @ResponseBody
     public Object GetNotAuthorizedApplication(){
         Map<String,Object> res = new HashMap<>();
-        List entities;
+        List<ApplicationEntity> entities;
+        int i=0;
         ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
+        List<ProducerEntity> producerEntity = new ArrayList<>();
+        ProducterRepositoryImpl processRepository = new ProducterRepositoryImpl();
+
         entities = applicationRepository.RandomGet();
+        for (i=0;i<entities.size();i++)
+            producerEntity.add(processRepository.get(entities.get(i).getApplicantUid()));
         res.put("code",0);
         res.put("info",entities);
+        res.put("producer",producerEntity);
         return res;
     }
 }
