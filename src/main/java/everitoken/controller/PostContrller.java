@@ -31,7 +31,7 @@ public class PostContrller {
         postEntity.setCustomerId(Integer.parseInt(data.get("customer_id").toString()));
         postEntity.setBatteryId(Integer.parseInt(data.get("battery_id").toString()));
         postEntity.setPhone(data.get("phone").toString());
-        postEntity.setPhone(data.get("email").toString());
+        postEntity.setEmail(data.get("email").toString());
         postEntity.setDate(new Timestamp(System.currentTimeMillis()));
         int uid = -1;
         try {
