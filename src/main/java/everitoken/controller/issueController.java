@@ -70,7 +70,7 @@ public class issueController {
         }
         BatteryEntity batteryEntity = new BatteryEntity();
         BatteryRepositoryImpl batteryRepository = new BatteryRepositoryImpl();
-        if(data.containsKey("type")) batteryEntity.setBatteryType(Integer.parseInt(data.get("type").toString()));
+        if(data.containsKey("type")) batteryEntity.setBatteryType(data.get("type").toString());
         if(data.containsKey("BatteryName")) batteryEntity.setUid(Integer.parseInt(data.get("BatteryName").toString()));
         if(data.containsKey("batteryMaxVoltage")) batteryEntity.setBatteryMaxVoltage(data.get("batteryMaxVoltage").toString());
         if(data.containsKey("batteryAverageTemperature")) batteryEntity.setBatteryAverageTemperature(data.get("batteryAverageTemperature").toString());
