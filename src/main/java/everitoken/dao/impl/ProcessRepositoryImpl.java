@@ -76,6 +76,7 @@ public class ProcessRepositoryImpl implements ProcessRepository {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from ProcessEntity process where process.applicantUid =:id");
+        query.setParameter("id",id);
         List result = query.getResultList();
         return result;
     }

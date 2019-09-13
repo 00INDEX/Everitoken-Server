@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class BatteryEntity {
     private Integer uid;
     private String batteryCapacity;
-    private Integer batteryType;
+    private String batteryType;
     private String batteryMaxVoltage;
     private String batteryAverageTemperature;
     private Integer batteryChgCycles;
@@ -40,11 +40,11 @@ public class BatteryEntity {
 
     @Basic
     @Column(name = "battery_type")
-    public Integer getBatteryType() {
+    public String getBatteryType() {
         return batteryType;
     }
 
-    public void setBatteryType(Integer batteryType) {
+    public void setBatteryType(String batteryType) {
         this.batteryType = batteryType;
     }
 
