@@ -2,6 +2,7 @@ package everitoken.controller;
 
 import everitoken.EveriTokenOperation.Action;
 import everitoken.Utils.Func;
+import everitoken.dao.UserRepository;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
 import org.springframework.stereotype.Controller;
@@ -241,6 +242,9 @@ public class transferController{
     @ResponseBody
     public Object GetTransactionInfo(@RequestBody Map<String,Object>data){
         Map<String,Object> res=new HashMap<>();
+        UserEntity userEntity = new UserEntity();
+        UserRepositoryImpl userRepository = new UserRepositoryImpl();
+
         int ID = 0;
         Jedis jedis = Func.getRedis(0);
         if(data.containsKey("id")){
@@ -266,6 +270,8 @@ public class transferController{
             String ID_code=data.get("ID_code").toString();
             res.put("BatteryName", jedis.get(ID + "_BatteryName"));
             res.put("ID_code", jedis.get(ID + "_ID_code"));
+            userEntity = userRepository.getById(ID);
+            res.put("Name",userEntity.getUsername());
         }
         return res;
     }
