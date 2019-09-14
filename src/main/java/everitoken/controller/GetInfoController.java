@@ -212,7 +212,10 @@ public class GetInfoController {
         BatteryEntity batteryEntity = GetBattery(ID);
         if(batteryEntity==null)
             return IDExist();
-        return Operate.GetBatteryInfo(batteryEntity);
+        res.put("Battery",Operate.GetBatteryInfo(batteryEntity));
+        ProducerEntity producerEntity = GetProducer(batteryEntity.getProducer());
+        res.put("Producer",producerEntity.getProducerName());
+        return res;
     }
     @RequestMapping(value = "/possessBattery",method = RequestMethod.POST)
     @ResponseBody
