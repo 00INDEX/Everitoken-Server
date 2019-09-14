@@ -120,13 +120,13 @@ public class Operate {
         PublicKeyEntity publicKeyEntity;
         UserEntity userEntity;
         PublicKeyRepositoryImpl publicKeyRepository = new PublicKeyRepositoryImpl();
-        UserRepository userRepository = new UserRepositoryImpl();
+        UserRepositoryImpl userRepository = new UserRepositoryImpl();
         int i;
         int j=Past.length;
         for(i=0;i<j;i++){
-            publicKeyEntity=publicKeyRepository.getByPK(Integer.parseInt(Past[i]));
+            publicKeyEntity=publicKeyRepository.getByPK(Past[i]);
             PastID=publicKeyEntity.getUserUid();
-            userEntity = userRepository.get(PastID);
+            userEntity =  userRepository.getById(PastID);
             PastOwner.add(userEntity.getUsername());
         }
         return PastOwner;
