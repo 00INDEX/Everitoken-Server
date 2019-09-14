@@ -57,6 +57,7 @@ public class AuthorizeController {
         applicationEntity.setApplicantUid(Integer.parseInt(data.get("ApplicantID").toString()));
         applicationEntity.setApplicationDocuments(data.get("ApplicationDocument").toString());
         applicationEntity.setApplicationTime(time);
+        applicationEntity.setAuthorized(-1);
         applicationRepository.add(applicationEntity);
 
         res.put("code",0);
