@@ -2,6 +2,7 @@ package everitoken.controller;
 
 
 import everitoken.EveriTokenOperation.Action;
+import everitoken.dao.PublicKeyRepository;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
 import org.hibernate.Session;
@@ -28,6 +29,9 @@ public class UserController {
     private RecyclingStationRepositoryImpl recyclingStationRepository;
     private Map<String, Object> res;
     private Action action = new Action();
+    private PublicKeyEntity publicKeyEntity = new PublicKeyEntity();
+    private PublicKeyRepositoryImpl publicKeyRepository = new PublicKeyRepositoryImpl();
+
     @RequestMapping(value = "test")
     @ResponseBody
     public Object test(){
@@ -76,11 +80,15 @@ public class UserController {
         if (data.containsKey("phone")) customerEntity.setCustomerPhone(data.get("phone").toString());
         userEntity.setType(0);
         customerEntity.setCustomerPrivateKey(action.createPrivateKey());
+
+        publicKeyEntity.setPublicKey(action.toPublicKey(customerEntity.getCustomerPrivateKey()));
         int uid = -1;
         try {
             uid = customerRepository.add(customerEntity);
             userEntity.setInfoId(uid);
             uid = userRepository.add(userEntity);
+            publicKeyEntity.setUserUid(uid);
+            publicKeyRepository.add(publicKeyEntity);
         }catch (Exception e){
             res.put("code", 20002);
             res.put("msg", e.getMessage());
@@ -100,7 +108,7 @@ public class UserController {
      */
     @RequestMapping(value = "/producer/register", method = RequestMethod.POST)
     @ResponseBody
-    public Object producer_register(HttpSession httpSession, @RequestBody Map<String, Object> data){
+    public Object producer_register(HttpSession httpSession, @RequestBody Map<String, Object> data) throws Exception {
         res = new HashMap<>();
         ProducerEntity producerEntity = new ProducerEntity();
         UserEntity userEntity = new UserEntity();
@@ -127,16 +135,20 @@ public class UserController {
         userEntity.setType(1);
         producerEntity.setProducerPrivateKey(action.createPrivateKey());
         producerEntity.setProducerAuthorized(0);
+        publicKeyEntity.setPublicKey(action.toPublicKey(producerEntity.getProducerPrivateKey()));
         int uid = -1;
         try {
             uid = producterRepository.add(producerEntity);
             userEntity.setInfoId(uid);
             uid = userRepository.add(userEntity);
+
         }catch (Exception e){
             res.put("code", 20002);
             res.put("msg", e.getMessage());
             return res;
         }
+        publicKeyEntity.setUserUid(uid);
+        publicKeyRepository.add(publicKeyEntity);
         httpSession.setAttribute("uid", uid);
         res.put("code", 0);
         res.put("msg", "success");
@@ -178,11 +190,14 @@ public class UserController {
         governmentEntity.setGovernmentPrivateKey(action.createPrivateKey());
         if(data.containsKey("government_CHNCode")) governmentEntity.setGovernmentChnCode(data.get("government_CHNCode").toString());
         userEntity.setType(2);
+        publicKeyEntity.setPublicKey(action.toPublicKey(governmentEntity.getGovernmentPrivateKey()));
         int uid = -1;
         try {
             uid = governmentRepository.add(governmentEntity);
             userEntity.setInfoId(uid);
             uid = userRepository.add(userEntity);
+            publicKeyEntity.setUserUid(uid);
+            publicKeyRepository.add(publicKeyEntity);
         }catch (Exception e){
             res.put("code", 20002);
             res.put("msg", e.getMessage());
@@ -226,12 +241,15 @@ public class UserController {
         if (data.containsKey("password")) userEntity.setPassword(data.get("password").toString());
         if (data.containsKey("email")) userEntity.setEmail(data.get("email").toString());
         recyclingStationEntity.setRsPrivateKey(action.createPrivateKey());
+        publicKeyEntity.setPublicKey(action.toPublicKey(recyclingStationEntity.getRsPrivateKey()));
         userEntity.setType(3);
         int uid = -1;
         try {
             uid =recyclingStationRepository.add(recyclingStationEntity);
             userEntity.setInfoId(uid);
             uid = userRepository.add(userEntity);
+            publicKeyEntity.setUserUid(uid);
+            publicKeyRepository.add(publicKeyEntity);
         }catch (Exception e){
             res.put("code", 20002);
             res.put("msg", e.getMessage());
