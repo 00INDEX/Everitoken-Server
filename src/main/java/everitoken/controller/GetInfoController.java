@@ -62,16 +62,24 @@ public class GetInfoController {
         }
         ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
         List<ProcessEntity> processEntities = processRepository.getByPId(Integer.parseInt(data.get("id").toString()));
-        if(processEntities==null||processEntities.size()==0){
-            res.put("code",10005);
-            res.put("msg","ID不存在数据库");
+        if(processEntities==null||processEntities.size()==0) {
+            res.put("code", 10005);
+            res.put("msg", "ID不存在数据库");
             return res;
         }
-        int i=processEntities.size();
-        int j;
-        for(j=0;j<i;j++){
-            res.put(""+j+"",Operate.GetProcessInfo(processEntities.get(j)));
+        ProducerEntity producerEntity;
+        ProducterRepositoryImpl producterRepository = new ProducterRepositoryImpl();
+        List<ApplicationEntity> applicationEntity=new ArrayList<>();
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
+        producerEntity = producterRepository.getById(processEntities.get(0).getApplicantUid());
+        int i;
+        for (i=0;i<processEntities.size();i++){
+            applicationEntity.add(applicationRepository.getById(processEntities.get(i).getApplicationUid()));
         }
+        res.put("Processes",processEntities);
+        res.put("Applications",applicationEntity);
+        res.put("Producer",producerEntity.getProducerName());
+
         return res;
     }
     @RequestMapping(value = "/AuthorizeRecord",method = RequestMethod.POST)
@@ -285,13 +293,30 @@ public class GetInfoController {
         List<ProcessEntity> processEntities;
         ProcessRepositoryImpl processRepository = new ProcessRepositoryImpl();
         if (!data.containsKey("id")){
-            res.put("code","10001");
+            res.put("code",10001);
             res.put("msg","缺少必要字段");
             return res;
         }
         Integer ID = Integer.parseInt(data.get("id").toString());
         processEntities = processRepository.getPassedProcesses(ID);
-        return processEntities;
+        if (processEntities.size()==0){
+            res.put("code",10005);
+            res.put("msg","该用户没有被授权操作过");
+            return res;
+        }
+        ProducerEntity producerEntity;
+        ProducterRepositoryImpl producterRepository = new ProducterRepositoryImpl();
+        List<ApplicationEntity> applicationEntity=new ArrayList<>();
+        ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
+        producerEntity = producterRepository.getById(processEntities.get(0).getApplicantUid());
+        int i;
+        for (i=0;i<processEntities.size();i++){
+            applicationEntity.add(applicationRepository.getById(processEntities.get(i).getApplicationUid()));
+        }
+        res.put("Processes",processEntities);
+        res.put("Applications",applicationEntity);
+        res.put("Producer",producerEntity.getProducerName());
+        return res;
     }
     @RequestMapping(value = "/GetProducerAuthorizeRecord",method = RequestMethod.POST)
     @ResponseBody
