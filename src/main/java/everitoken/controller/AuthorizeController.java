@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static everitoken.Operations.Operate.*;
@@ -107,6 +109,15 @@ public class AuthorizeController {
         producterRepository.update(producerEntity);
         applicationEntity.setAuthorized(Integer.parseInt(data.get("AuthorizeValue").toString()));
         applicationRepository.update(applicationEntity);
+        List<ApplicationEntity> applicationEntityList =new ArrayList<>();
+        int i;
+        if (data.get("AuthorizeValue").toString().equals("1")) {
+            applicationEntityList = applicationRepository.getByAId(Integer.parseInt(data.get("ApplicantID").toString()));
+            for (i = 0; i < applicationEntityList.size(); i++) {
+                applicationEntityList.get(i).setAuthorized(Integer.parseInt(data.get("AuthorizeValue").toString()));
+            }
+        }
+
         res.put("code",0);
         res.put("msg","success");
         return res;
