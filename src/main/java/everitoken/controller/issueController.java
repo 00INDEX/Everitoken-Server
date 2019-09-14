@@ -22,7 +22,7 @@ import static everitoken.Operations.Operate.GetProducerInfo;
 public class issueController {
     @RequestMapping(value = "/issueBattery",method = RequestMethod.POST)
     @ResponseBody
-    public Object IssueBattery(@RequestBody Map<String,Object>data){//function:发行电池 need:生产商ID、电池名称、电池类型,电池循环充放电次数
+    public Object IssueBattery(@RequestBody Map<String,Object>data) throws Exception {//function:发行电池 need:生产商ID、电池名称、电池类型,电池循环充放电次数
         Map<String,Object> res=new HashMap<>();
         String batteryName;
         Action action = new Action();
@@ -77,9 +77,11 @@ public class issueController {
         if(data.containsKey("batteryChgCycles")) batteryEntity.setBatteryChgCycles(Integer.parseInt(data.get("batteryChgCycles").toString()));
         batteryEntity.setBatteryName(batteryName);
         batteryEntity.setBatteryCapacity(data.get("batteryMaxVoltage").toString());
-        batteryRepository.save(batteryEntity);
+        batteryEntity.setProducer(Integer.parseInt(data.get("id").toString()));
+        batteryRepository.add(batteryEntity);
         res.put("code",0);
         res.put("msg","success");
+        res.put("BatteryName",batteryEntity.getBatteryName());
         return res;
     }
     @RequestMapping(value = "/DestroyBattery",method = RequestMethod.POST)
