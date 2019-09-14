@@ -14,5 +14,7 @@
         <property name="batteryAverageTemperature" column="battery_average_temperature"/>
         <property name="batteryChgCycles" column="battery_CHG_cycles"/>
         <property name="batteryName" column="battery_name"/>
+        <property name="producer" column="producer"/>
+        <!-- safafdsfd >
     </class>
 </hibernate-mapping>
