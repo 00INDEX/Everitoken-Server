@@ -35,7 +35,9 @@ public class issueController {
         if(!data.containsKey("type")
                 ||!data.containsKey("batteryMaxVoltage")
                 ||!data.containsKey("batteryAverageTemperature")
-                ||!data.containsKey("batteryChgCycles"))
+                ||!data.containsKey("batteryChgCycles")
+                ||!data.containsKey("batteryCapacity")
+        )
         {
             res.put("code",10001);
             res.put("msg","缺少电池信息");
@@ -75,6 +77,7 @@ public class issueController {
         if(data.containsKey("batteryMaxVoltage")) batteryEntity.setBatteryMaxVoltage(data.get("batteryMaxVoltage").toString());
         if(data.containsKey("batteryAverageTemperature")) batteryEntity.setBatteryAverageTemperature(data.get("batteryAverageTemperature").toString());
         if(data.containsKey("batteryChgCycles")) batteryEntity.setBatteryChgCycles(Integer.parseInt(data.get("batteryChgCycles").toString()));
+        if(data.containsKey("batteryCapacity")) batteryEntity.setBatteryCapacity(data.get("batteryCapacity").toString());
         batteryEntity.setBatteryName(batteryName);
         batteryEntity.setBatteryCapacity(data.get("batteryMaxVoltage").toString());
         batteryEntity.setProducer(Integer.parseInt(data.get("id").toString()));
