@@ -1,7 +1,9 @@
 package everitoken.controller;
 
 import everitoken.EveriTokenOperation.Action;
+import everitoken.Operations.BatteryInfos;
 import everitoken.Utils.Func;
+import everitoken.dao.BatteryRepository;
 import everitoken.dao.UserRepository;
 import everitoken.dao.impl.*;
 import everitoken.entity.*;
@@ -19,28 +21,29 @@ import java.util.HashMap;
 import java.util.Map;
 import everitoken.Utils.Func.*;
 
+
 @Controller
 @RequestMapping(value = "/transfer")
 public class transferController{
    private Action action = new Action();
+   private BatteryInfos batteryInfos = new BatteryInfos();
+   private BatteryEntity batteryEntity = new BatteryEntity();
     @RequestMapping(value = "/sell/begin",method = RequestMethod.POST)
     @ResponseBody
     public Object Customer_transfer_Beginner(HttpSession httpSession, @RequestBody Map<String, Object> data){//发起者的ID，识别码.电池名称
         Integer ID ;
         Map<String,Object> res = new HashMap<>();
         String ID_code;
-        if(data.containsKey("id")){
+        if(data.containsKey("id"))
             ID = Integer.parseInt(data.get("id").toString());
-        }
         else
         {
             res.put("code",10001);
             res.put("msg","没有用户ID");
             return res;
         }
-        if(data.containsKey("ID_code")){
+        if(data.containsKey("ID_code"))
             ID_code=data.get("ID_code").toString();
-        }
         else
         {
             res.put("code",10001);
@@ -52,6 +55,12 @@ public class transferController{
             res.put("msg","没有电池名称");
             return res;
         }
+        if(!data.containsKey("BatteryInfos")){
+            res.put("code",10001);
+            res.put("msg","没有电池详细信息");
+            return res;
+        }
+        batteryInfos.updateBatteryInfo(data.get("BatteryInfos").toString(),data.get("BatteryName").toString());
         Jedis jedis = Func.getRedis(0);
         if(jedis.exists(ID.toString() + "_confirm") && jedis.get(ID.toString() + "_confirm").equals("0")){
             res.put("code",10002);
@@ -65,6 +74,7 @@ public class transferController{
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
         jedis.setex(ID.toString() + "_BatterTime", 5 * 60, sdf.format(date));
         jedis.setex(ID.toString() + "_confirm",5 * 60, "0");
+
         res.put("code",0);
         res.put("msg","等待对方确认");
         return res;
@@ -77,6 +87,10 @@ public class transferController{
             String Stater_ID = data.get("starter_id").toString();
             String Checker_ID = data.get("checker_id") .toString();
             String Battery_name = data.get("Battery_name").toString();
+            String infoOfBattery;
+            BatteryRepository batteryRepository2 = new BatteryRepositoryImpl();
+            batteryEntity = batteryRepository2.getById(Battery_name);
+            infoOfBattery=batteryInfos.Info2String(batteryEntity);
             Jedis jedis = Func.getRedis(0);
             if(jedis.exists(Stater_ID.toString() + "_confirm") && jedis.get(Stater_ID.toString() + "_confirm").equals("0"))
             {
@@ -191,7 +205,7 @@ public class transferController{
 
 
                     publicKey =action.toPublicKey(privateKey2);
-                    if(action.transferBattery(Battery_name,privateKey,publicKey))
+                    if(action.transferBattery(Battery_name,privateKey,publicKey,infoOfBattery))
                     {
                         jedis.set(Stater_ID.toString() + "_confirm", "1");
                         res.put("code",0);
@@ -245,7 +259,7 @@ public class transferController{
         UserEntity userEntity = new UserEntity();
         UserRepositoryImpl userRepository = new UserRepositoryImpl();
 
-        int ID = 0;
+        Integer ID = 0;
         Jedis jedis = Func.getRedis(0);
         if(data.containsKey("id")){
             ID = Integer.parseInt(data.get("id").toString());
@@ -262,11 +276,17 @@ public class transferController{
             return res;
         }
         else{
+            if (jedis.get(ID+"_confirm")==null){
+                res.put("code",10007);
+                res.put("msg","订单不存在");
+                return res;
+            }
             if (Integer.parseInt(jedis.get(ID+"_confirm"))==1){
                 res.put("code",10007);
                 res.put("msg","订单不存在");
                 return res;
             }
+
             String ID_code=data.get("ID_code").toString();
             res.put("BatteryName", jedis.get(ID + "_BatteryName"));
             res.put("ID_code", jedis.get(ID + "_ID_code"));
