@@ -4,6 +4,7 @@ import com.alibaba.fastjson.support.odps.udf.CodecCheck;
 import com.sun.xml.bind.v2.model.core.ID;
 import everitoken.EveriTokenOperation.Action;
 import everitoken.EveriTokenOperation.Info;
+import everitoken.Operations.BatteryInfos;
 import everitoken.Operations.Operate;
 import everitoken.dao.*;
 import everitoken.dao.impl.*;
@@ -31,6 +32,7 @@ public class GetInfoController {
     public Object GetPastOwner(@RequestBody Map<String,Object> data)//function：获得一个电池的交易记录 need：电池名称
     {
         Map<String,Object> res=new HashMap<>();
+        BatteryInfos batteryInfos=new BatteryInfos();
         Info info=new Info();
         String[] PastOwner;
         if(data.containsKey("BatteryName"))
@@ -46,7 +48,11 @@ public class GetInfoController {
             res.put("msg","溯源失败");
             return res;
         }
-
+        List<String> Details=new ArrayList<>();
+        for(int i=1;i<PastOwner.length;i++)
+            Details.add(info.getTransactionDetail(PastOwner[i-1],PastOwner[i],data.get("BatteryName").toString()));
+        for(int i=0;i<Details.size();i++)
+            res.put("Detail"+i,batteryInfos.String2Map(Details.get(i)));
         res.put("code",0);
         res.put("msg",ToUserName(PastOwner));
         return res;
@@ -67,18 +73,19 @@ public class GetInfoController {
             res.put("msg", "ID不存在数据库");
             return res;
         }
-        ProducerEntity producerEntity;
+        List<ProducerEntity> producerEntity=new ArrayList<>();
         ProducterRepositoryImpl producterRepository = new ProducterRepositoryImpl();
         List<ApplicationEntity> applicationEntity=new ArrayList<>();
         ApplicationRepositoryImpl applicationRepository = new ApplicationRepositoryImpl();
-        producerEntity = producterRepository.getById(processEntities.get(0).getApplicantUid());
+        ;
         int i;
         for (i=0;i<processEntities.size();i++){
             applicationEntity.add(applicationRepository.getById(processEntities.get(i).getApplicationUid()));
+            producerEntity.add(producterRepository.getById(processEntities.get(i).getApplicantUid()));
         }
         res.put("Processes",processEntities);
         res.put("Applications",applicationEntity);
-        res.put("Producer",producerEntity.getProducerName());
+        res.put("Producer",producerEntity);
 
         return res;
     }
